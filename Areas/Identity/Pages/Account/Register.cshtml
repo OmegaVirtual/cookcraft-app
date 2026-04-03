@@ -1,0 +1,105 @@
+﻿@page
+@model Recipes.Areas.Identity.Pages.Account.RegisterModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Register";
+}
+
+<section class="py-5 pb-6" style="background-color: var(--background);">
+    <div class="container px-3">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold display-4" style="color: var(--primary);">
+                <i class="bi bi-person-plus-fill me-2"></i>Create Your CookCraft Account
+            </h2>
+            <p class="text-muted fs-5">Sign up to start crafting and saving your favorite recipes.</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-lg border-0 rounded-4 p-5" style="background-color: #fff; color: #0f172a;">
+                    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <!-- Username -->
+                        <div class="form-group mb-4">
+                            <label asp-for="Input.Username" class="form-label form-label-lg fw-semibold">👤 Username</label>
+                            <input asp-for="Input.Username" class="form-control form-control-lg rounded-pill" placeholder="Choose a username" />
+                            <span asp-validation-for="Input.Username" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group mb-4">
+                            <label asp-for="Input.Email" class="form-label form-label-lg fw-semibold">📧 Email</label>
+                            <input asp-for="Input.Email" class="form-control form-control-lg rounded-pill" placeholder="you@example.com" />
+                            <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Diet Option -->
+                        <div class="form-group mb-4">
+                            <label asp-for="Input.DietOption" class="form-label form-label-lg fw-semibold">🥗 Diet Preference</label>
+                            <select asp-for="Input.DietOption" class="form-select form-select-lg rounded-pill">
+                                <option value="">-- Select Diet --</option>
+                                <option>Vegan</option>
+                                <option>Vegetarian</option>
+                                <option>Keto</option>
+                                <option>Paleo</option>
+                                <option>Standard</option>
+                                <option>Mediterranean</option>
+                                <option>Low-Carb</option>
+                                <option>High-Protein</option>
+                                <option>Gluten-Free</option>
+                                <option>Dairy-Free</option>
+                                <option>Pescatarian</option>
+                                <option>Flexitarian</option>
+                            </select>
+                            <span asp-validation-for="Input.DietOption" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-group mb-4">
+                            <label asp-for="Input.Password" class="form-label form-label-lg fw-semibold">🔒 Password</label>
+                            <input asp-for="Input.Password" class="form-control form-control-lg rounded-pill" placeholder="Create a password" />
+                            <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="form-group mb-5">
+                            <label asp-for="Input.ConfirmPassword" class="form-label form-label-lg fw-semibold">🔁 Confirm Password</label>
+                            <input asp-for="Input.ConfirmPassword" class="form-control form-control-lg rounded-pill" placeholder="Repeat your password" />
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Submit -->
+                        <button type="submit" class="btn btn-xl text-white w-100 rounded-pill fw-bold" style="background-color: var(--accent);">
+                            <i class="bi bi-check-circle me-2"></i>Register
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .btn-xl {
+        font-size: 1.25rem;
+        padding: 1rem 2rem;
+    }
+
+    .form-label-lg {
+        font-size: 1.1rem;
+        color: #0f172a;
+    }
+
+    input.form-control-lg,
+    select.form-select-lg {
+        font-size: 1.1rem;
+        background-color: #ffffff;
+        color: #0f172a;
+    }
+
+    .container.pb-6 {
+        padding-bottom: 6rem !important;
+    }
+</style>
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

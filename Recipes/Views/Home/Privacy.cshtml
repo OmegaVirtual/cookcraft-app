@@ -1,0 +1,191 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5 mt-5 pt-5 animate-fade" style="max-width: 900px; margin-top: 130px !important;">
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold mb-3"
+            style="background: linear-gradient(90deg, var(--primary), var(--accent)); -webkit-background-clip: text; color: transparent;">
+            <i class="bi bi-shield-lock-fill me-2"></i>Privacy Policy
+        </h1>
+        <p class="fs-5 text-muted">
+            This Privacy Policy outlines how <strong>CookCraft</strong> collects, uses, stores, and protects your information.
+            By using our platform, you agree to the terms described below.
+        </p>
+        <p class="text-muted small">Last Updated: November 2025</p>
+    </div>
+
+    <!-- LEGAL + COMPLIANT SECTIONS -->
+    @{
+        var sections = new[]
+        {
+        new {
+        Icon = "bi-archive-fill",
+        Title = "1. Information We Collect",
+        Items = new [] {
+        "<strong>Account Information:</strong> Username, optional email, dietary preferences, and optional profile picture.",
+        "<strong>User-Generated Content:</strong> Saved recipes, grocery items, activity history, achievements, and allergens.",
+        "<strong>Technical Data:</strong> Device type, browser, IP region, anonymous diagnostic logs for errors or crashes.",
+        "<strong>We DO NOT collect:</strong> exact location, payment information, biometric data, or sensitive personal data."
+        }
+        },
+        new {
+        Icon = "bi-lightbulb-fill",
+        Title = "2. How We Use Your Information",
+        Items = new [] {
+        "Provide core app features including recipes, grocery planner, achievements, and profile customization.",
+        "Generate personalized recommendations and nutrition insights.",
+        "Improve platform performance, stability, and user experience.",
+        "Respond to support requests and secure your account.",
+        "Prevent fraud, abuse, and maintain service integrity."
+        }
+        },
+        new {
+        Icon = "bi-server",
+        Title = "3. Data Storage & Retention",
+        Items = new [] {
+        "Your data is stored securely on Microsoft Azure servers.",
+        "Information is retained only while your account is active.",
+        "When you delete your account, all personal data and recipes are permanently removed.",
+        "Backups containing your data are cleared within 30 days."
+        }
+        },
+        new {
+        Icon = "bi-lock-fill",
+        Title = "4. How We Protect Your Information",
+        Items = new [] {
+        "Full HTTPS encryption across all services.",
+        "Industry-standard password hashing.",
+        "Access controls and security auditing.",
+        "Regular security patches and server monitoring."
+        }
+        },
+        new {
+        Icon = "bi-cookie",
+        Title = "5. Cookies & Tracking",
+        Items = new [] {
+        "CookCraft uses only essential cookies for login sessions and security.",
+        "We do NOT use advertising cookies or third-party tracking scripts.",
+        "We do not sell or share your data for marketing."
+        }
+        },
+        new {
+        Icon = "bi-hand-thumbs-up-fill",
+        Title = "6. Your Rights",
+        Items = new [] {
+        "Request access to your data.",
+        "Export or review your recipe and activity history.",
+        "Update dietary preferences and account information.",
+        "Request permanent deletion of your data.",
+        "Withdraw consent and stop using the service at any time."
+        }
+        },
+        new {
+        Icon = "bi-people-fill",
+        Title = "7. Children's Privacy",
+        Items = new [] {
+        "CookCraft is not intended for children under 13.",
+        "We do not knowingly collect or store data from children.",
+        "If a child has created an account, contact us and we will remove it."
+        }
+        },
+        new {
+        Icon = "bi-globe2",
+        Title = "8. Third-Party Services",
+        Items = new [] {
+        "CookCraft uses trusted third-party services including:",
+        "<strong>Microsoft Azure:</strong> hosting and database services.",
+        "<strong>Email Service Provider:</strong> for password resets and support communication.",
+        "These providers comply with GDPR, CPRA, and standard data protection laws."
+        }
+        },
+        new {
+        Icon = "bi-repeat",
+        Title = "9. Policy Updates",
+        Items = new [] {
+        "We may update this Privacy Policy to reflect changes in laws or app functionality.",
+        "Any updates will be published on this page with a new 'Last Updated' date."
+        }
+        },
+        new {
+        Icon = "bi-envelope-paper-fill",
+        Title = "10. Contact Us",
+        Items = new [] {
+        "For privacy concerns, data requests, or questions, contact us anytime:",
+        "<a href='mailto:cookcraft@mail.uk' class='fw-semibold' style='color: var(--accent);'>cookcraft@mail.uk</a>"
+        }
+        }
+        };
+    }
+
+    @foreach (var sec in sections)
+    {
+        <div class="privacy-card card border-0 shadow-lg p-4 mb-4 rounded-4">
+            <h4 class="fw-bold mb-3" style="color: var(--primary);">
+                <i class="bi @sec.Icon me-2"></i>@sec.Title
+            </h4>
+            <ul class="text-muted mb-0">
+                @foreach (var item in sec.Items)
+                {
+                    <li class="mb-1">@Html.Raw(item)</li>
+                }
+            </ul>
+        </div>
+    }
+
+    <div class="text-center mt-5">
+        <a href="/" class="btn btn-lg rounded-pill fw-semibold px-4 py-2 shadow-sm"
+           style="border: 2px solid var(--primary); color: var(--primary); transition: 0.3s;">
+            <i class="bi bi-arrow-left me-2"></i>Back to Home
+        </a>
+    </div>
+</div>
+
+<style>
+    .privacy-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+        .privacy-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+        }
+
+    .animate-fade {
+        animation: fadeIn 1s ease-in-out;
+    }
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    ul.text-muted {
+        list-style: none;
+        padding-left: 0;
+    }
+
+        ul.text-muted li::before {
+            content: "• ";
+            color: var(--accent);
+            font-weight: bold;
+            margin-right: 6px;
+        }
+
+    a.btn:hover {
+        background-color: var(--primary);
+        color: #fff !important;
+    }
+</style>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

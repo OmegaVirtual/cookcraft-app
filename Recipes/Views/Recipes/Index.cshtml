@@ -1,0 +1,361 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Recipes.Models.ViewModels
+@inject UserManager<ApplicationUser> UserManager
+@model RecipeListViewModel
+
+@{
+    ViewData["Title"] = "Recipe Library";
+    var user = User.Identity.IsAuthenticated ? await UserManager.GetUserAsync(User) : null;
+    var currentCategory = Context.Request.Query["category"].ToString();
+}
+
+<div class="container py-5">
+
+    <!-- 🧭 Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-5">
+        <h1 class="fw-bold display-5 mb-3 mb-md-0 text-gradient">
+            <i class="bi bi-journal-bookmark-fill me-2"></i>Recipe Library
+        </h1>
+
+        @if (user != null)
+        {
+            <a asp-action="Add" class="btn btn-lg add-btn rounded-pill px-4 py-2 shadow-sm">
+                <i class="bi bi-plus-circle me-2"></i>Add Recipe
+            </a>
+        }
+    </div>
+
+    <!-- 🏷️ Category Navigation -->
+    <div class="category-nav d-flex flex-wrap justify-content-center gap-3 mb-5">
+        <a asp-action="Index" asp-route-category="Healthy Bites"
+           class="category-pill healthy @(currentCategory == "Healthy Bites" ? "active" : "")">
+            🥗 Healthy Bites
+        </a>
+        <a asp-action="Index" asp-route-category="Quick & Easy"
+           class="category-pill quick @(currentCategory == "Quick & Easy" ? "active" : "")">
+            ⚡ Quick & Easy
+        </a>
+        <a asp-action="Index" asp-route-category="Comfort Cravings"
+           class="category-pill comfort @(currentCategory == "Comfort Cravings" ? "active" : "")">
+            🍲 Comfort Cravings
+        </a>
+        <a asp-action="Index"
+           class="category-pill all @(string.IsNullOrEmpty(currentCategory) ? "active" : "")">
+            🌍 All Recipes
+        </a>
+    </div>
+
+    <!-- 🔍 Search and Sort -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+        <form asp-action="Index" method="get" class="d-flex align-items-center" style="max-width: 300px;">
+            <div class="input-group input-group-sm rounded-pill shadow-sm">
+                <input type="text" name="search" class="form-control border-0 rounded-start-pill ps-3"
+                       placeholder="Search recipes..." value="@Model.SearchTerm" />
+                <button type="submit" class="btn btn-outline-secondary rounded-end-pill px-3">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </form>
+
+        <div class="d-flex align-items-center">
+            <span class="me-2 fw-semibold text-muted"><i class="bi bi-sort-down"></i> Sort by:</span>
+            <a asp-action="Index" asp-route-sort="az" class="btn btn-sm btn-outline-dark rounded-pill me-2 px-3">A–Z</a>
+            <a asp-action="Index" asp-route-sort="latest" class="btn btn-sm btn-outline-dark rounded-pill px-3">Newest</a>
+        </div>
+    </div>
+
+    <!-- 📄 Recipe Grid -->
+    @if (!Model.Recipes.Any())
+    {
+        <div class="alert alert-info text-center py-5 rounded-4 shadow-sm">
+            <i class="bi bi-emoji-frown display-6 d-block mb-3"></i>
+            <strong>No recipes found.</strong><br />
+            Try adding or importing one!
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var recipe in Model.Recipes)
+            {
+                var isPopular = recipe.Ingredients?.Count >= 6;
+                var isFavorite = user != null && user.FavoriteRecipeIds?.Contains(recipe.Id) == true;
+                var isOwnerOrAdmin = user != null && (recipe.ApplicationUserId == user.Id || User.IsInRole("Admin"));
+
+                <div class="col">
+                    <div class="card h-100 border-0 rounded-4 overflow-hidden shadow-lg recipe-card bg-glass animate-fade">
+
+                        <!-- 🖼 Image -->
+                        <div class="position-relative">
+                            <img src="@recipe.ImageUrl" class="card-img-top" alt="@recipe.Title"
+                                 style="height: 230px; object-fit: cover;">
+
+                            @if (isPopular)
+                            {
+                                <span class="position-absolute top-0 start-0 bg-warning text-dark px-3 py-1 rounded-end rounded-bottom fw-bold small shadow-sm">
+                                    <i class="bi bi-fire me-1"></i>Popular
+                                </span>
+                            }
+
+                            @if (!string.IsNullOrEmpty(recipe.Category))
+                            {
+                                <span class="position-absolute bottom-0 start-0 bg-dark text-white small px-3 py-1 rounded-top-end shadow-sm opacity-75">
+                                    <i class="bi bi-tag me-1"></i>@recipe.Category
+                                </span>
+                            }
+                        </div>
+
+                        <!-- 📋 Content -->
+                        <div class="card-body d-flex flex-column justify-content-between p-4">
+                            <div class="text-center mb-3">
+                                <h5 class="card-title fw-bold mb-2 text-dark">
+                                    <i class="bi bi-bookmark-heart me-1 text-danger"></i>@recipe.Title
+                                </h5>
+
+                                @* <p class="text-muted small mb-2" style="min-height: 50px;">@recipe.ShortDescription</p> *@
+
+
+                                @if (recipe.ApplicationUser != null)
+                                {
+                                    <p class="text-muted small mb-0">
+                                        <i class="bi bi-person-circle me-1 text-primary"></i>
+                                        Added by
+                                        <a asp-controller="Profile" asp-action="View" asp-route-id="@recipe.ApplicationUser.Id"
+                                           class="fw-semibold text-decoration-none text-primary-hover">
+                                            @recipe.ApplicationUser.UserName
+                                        </a>
+                                    </p>
+                                }
+
+                                <!-- ⭐ UPDATED ALLERGEN DISPLAY ⭐ -->
+                                @if (recipe.Allergens != null && recipe.Allergens.Any())
+                                {
+                                    <div class="mt-3 d-flex flex-wrap justify-content-center gap-2">
+                                        @foreach (var allergen in recipe.Allergens)
+                                        {
+                                            var colorClass = allergen switch
+                                            {
+                                                "Fish" => "bg-info text-dark",
+                                                "Shellfish (Crustaceans)" => "bg-primary text-white",
+                                                "Molluscs" => "bg-primary text-white",
+                                                "Peanuts" => "bg-warning text-dark",
+                                                "Tree Nuts" => "bg-warning text-dark",
+                                                "Gluten" => "bg-secondary text-white",
+                                                "Eggs" => "bg-danger text-white",
+                                                "Milk" => "bg-danger text-white",
+                                                _ => "bg-danger-subtle text-danger"
+                                            };
+
+                                            var icon = allergen switch
+                                            {
+                                                "Milk" => "🥛",
+                                                "Eggs" => "🥚",
+                                                "Fish" => "🐟",
+                                                "Shellfish (Crustaceans)" => "🦐",
+                                                "Molluscs" => "🐚",
+                                                "Gluten" => "🌾",
+                                                "Peanuts" => "🥜",
+                                                "Tree Nuts" => "🌰",
+                                                "Soy" => "🌱",
+                                                "Sesame" => "⚪",
+                                                "Mustard" => "🌼",
+                                                "Celery" => "🥬",
+                                                _ => "⚠️"
+                                            };
+
+                                            <span class="badge px-3 py-2 rounded-pill @colorClass shadow-sm small">
+                                                @icon @allergen
+                                            </span>
+                                        }
+                                    </div>
+                                }
+                            </div>
+
+                            <!-- 🎛 Buttons -->
+                            <div class="d-flex flex-wrap justify-content-center gap-2 mt-auto">
+                                <button type="button"
+                                        class="btn @(isFavorite ? "btn-success" : "btn-outline-success") btn-sm rounded-pill px-3 fw-semibold favorite-btn"
+                                        data-recipe-id="@recipe.Id">
+                                    <i class="bi @(isFavorite ? "bi-heart-fill" : "bi-heart") me-1"></i>
+                                    @(isFavorite ? "Favorited" : "Favorite")
+                                </button>
+
+                                <a asp-action="View" asp-route-id="@recipe.Id"
+                                   class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-semibold">
+                                    <i class="bi bi-eye me-1"></i>View
+                                </a>
+
+                                @if (isOwnerOrAdmin)
+                                {
+                                    <a asp-action="Edit" asp-route-id="@recipe.Id"
+                                       class="btn btn-warning btn-sm rounded-pill px-3 fw-semibold">
+                                        <i class="bi bi-pencil-square me-1"></i>Edit
+                                    </a>
+                                    <form asp-action="Delete" asp-route-id="@recipe.Id" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit"
+                                                class="btn btn-danger btn-sm rounded-pill px-3 fw-semibold"
+                                                onclick="return confirm('Are you sure you want to delete this recipe?');">
+                                            <i class="bi bi-trash3 me-1"></i>Delete
+                                        </button>
+                                    </form>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <!-- 📄 Pagination -->
+    @if (Model.TotalPages > 1)
+    {
+        <div class="d-flex justify-content-center mt-5">
+            <nav>
+                <ul class="pagination pagination-sm">
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link rounded-pill px-3"
+                               asp-action="Index"
+                               asp-route-page="@i"
+                               asp-route-search="@Model.SearchTerm"
+                               asp-route-sort="@Model.SortOrder"
+                               asp-route-category="@currentCategory">@i</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.favorite-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const recipeId = this.getAttribute('data-recipe-id');
+                fetch('/Recipes/Favorite/' + recipeId, {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                    }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            this.classList.toggle('btn-outline-success');
+                            this.classList.toggle('btn-success');
+                            this.innerHTML = this.classList.contains('btn-success')
+                                ? '<i class="bi bi-heart-fill me-1"></i>Favorited'
+                                : '<i class="bi bi-heart me-1"></i>Favorite';
+                        }
+                    });
+            });
+        });
+    </script>
+
+    <style>
+        :root {
+            --accent: #2bb673;
+            --primary: #242424;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --blur: 20px;
+        }
+
+        body {
+            background: linear-gradient(135deg, #eafaf1, #f5f9ff);
+        }
+
+        .text-gradient {
+            background: linear-gradient(90deg, #2bb673, #2ca8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .add-btn {
+            background: linear-gradient(90deg, #2bb673, #2ca8ff);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+            .add-btn:hover {
+                opacity: 0.9;
+                transform: translateY(-2px);
+            }
+
+        .category-nav .category-pill {
+            border-radius: 50px;
+            padding: 0.6rem 1.3rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+            font-size: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+        }
+
+        .category-pill.active {
+            border: 2px solid #2ca8ff;
+            box-shadow: 0 0 10px rgba(44,168,255,0.3);
+            transform: scale(1.08);
+        }
+
+        .category-pill.healthy {
+            background-color: #d8f8e1;
+            color: #2bb673;
+        }
+
+        .category-pill.quick {
+            background-color: #d9f0ff;
+            color: #2ca8ff;
+        }
+
+        .category-pill.comfort {
+            background-color: #fff3cd;
+            color: #e79a2d;
+        }
+
+        .category-pill.all {
+            background-color: #eaeaea;
+            color: #444;
+        }
+
+        .category-pill:hover {
+            transform: scale(1.07);
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .bg-glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--blur));
+        }
+
+        .recipe-card {
+            transition: all 0.25s ease-in-out;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+            .recipe-card:hover {
+                transform: translateY(-5px) scale(1.02);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            }
+
+        .pagination .page-item.active .page-link {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .badge.bg-danger-subtle {
+            background-color: #fce4e4;
+        }
+
+        .text-primary-hover:hover {
+            color: #2ca8ff !important;
+        }
+    </style>
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

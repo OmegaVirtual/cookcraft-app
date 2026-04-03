@@ -1,0 +1,184 @@
+﻿@{
+    ViewData["Title"] = "Terms & Conditions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5 mt-5 pt-5 animate-fade" style="max-width: 900px; margin-top: 130px !important;">
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold mb-3"
+            style="background: linear-gradient(90deg, var(--primary), var(--accent)); -webkit-background-clip: text; color: transparent;">
+            <i class="bi bi-file-earmark-text-fill me-2"></i>Terms & Conditions
+        </h1>
+        <p class="fs-5 text-muted">
+            Please read these Terms & Conditions carefully before using <strong>CookCraft</strong>.
+            By accessing or using the platform, you agree to be bound by these Terms.
+        </p>
+        <p class="text-muted small">Last Updated: November 2025</p>
+    </div>
+
+    <!-- MAIN TERMS SECTIONS -->
+    @{
+        var sections = new[]
+        {
+        new {
+        Icon = "bi-check-circle-fill",
+        Title = "1. Acceptance of Terms",
+        Items = new[] {
+        "By creating an account or using CookCraft, you agree to comply with these Terms & Conditions.",
+        "If you do not agree, you may not use the service."
+        }
+        },
+        new {
+        Icon = "bi-person-badge-fill",
+        Title = "2. User Accounts",
+        Items = new[] {
+        "You must provide accurate information when creating your account.",
+        "You are responsible for maintaining the confidentiality of your login credentials.",
+        "You agree not to share your account or allow others to access it."
+        }
+        },
+        new {
+        Icon = "bi-journal-text",
+        Title = "3. User Content",
+        Items = new[] {
+        "You may create, import, or save recipes, grocery lists, preferences, and other content.",
+        "You are responsible for ensuring that your content does not infringe on the rights of others.",
+        "We may remove content that violates these Terms, at our discretion."
+        }
+        },
+        new {
+        Icon = "bi-ban",
+        Title = "4. Prohibited Activities",
+        Items = new[] {
+        "Uploading copyrighted content that you do not own.",
+        "Attempting to hack, disrupt, or harm the platform.",
+        "Uploading malicious files, spam, or automated scripts.",
+        "Using CookCraft for illegal or abusive purposes."
+        }
+        },
+        new {
+        Icon = "bi-lightning-fill",
+        Title = "5. Intellectual Property",
+        Items = new[] {
+        "All branding, design, and platform features belong to CookCraft.",
+        "You may not copy, modify, or redistribute any part of the platform without permission.",
+        "Your recipes and content remain yours; we do not claim ownership."
+        }
+        },
+        new {
+        Icon = "bi-exclamation-triangle-fill",
+        Title = "6. Nutrition & Recipe Disclaimer",
+        Items = new[] {
+        "CookCraft provides recipe suggestions and nutrition insights for informational purposes only.",
+        "We do not guarantee accuracy of nutrition estimates, allergens detection, or dietary advice.",
+        "Always use personal judgement or consult a professional for dietary or health-related decisions."
+        }
+        },
+        new {
+        Icon = "bi-shield-fill-check",
+        Title = "7. Limitation of Liability",
+        Items = new[] {
+        "CookCraft is provided 'as is' without warranty of any kind.",
+        "We are not responsible for any health issues, damages, or losses resulting from the use of recipes or nutritional information.",
+        "We do not guarantee uninterrupted or error-free service."
+        }
+        },
+        new {
+        Icon = "bi-x-circle-fill",
+        Title = "8. Termination",
+        Items = new[] {
+        "We may suspend or terminate your account if you violate these Terms.",
+        "You may delete your account at any time through your profile settings.",
+        "Upon deletion, your personal data and content will be permanently removed."
+        }
+        },
+        new {
+        Icon = "bi-globe2",
+        Title = "9. Governing Law",
+        Items = new[] {
+        "These Terms are governed by applicable laws in your country of residence.",
+        "Any disputes will be handled according to these laws."
+        }
+        },
+        new {
+        Icon = "bi-envelope-fill",
+        Title = "10. Contact Information",
+        Items = new[] {
+        "If you have questions about these Terms, contact us at:",
+        "<a href='mailto:cookcraft@mail.uk' class='fw-semibold' style='color: var(--accent);'>cookcraft@mail.uk</a>"
+        }
+        }
+        };
+    }
+
+    @foreach (var sec in sections)
+    {
+        <div class="privacy-card card border-0 shadow-lg p-4 mb-4 rounded-4">
+            <h4 class="fw-bold mb-3" style="color: var(--primary);">
+                <i class="bi @sec.Icon me-2"></i>@sec.Title
+            </h4>
+            <ul class="text-muted mb-0">
+                @foreach (var item in sec.Items)
+                {
+                    <li class="mb-1">@Html.Raw(item)</li>
+                }
+            </ul>
+        </div>
+    }
+
+    <div class="text-center mt-5">
+        <a href="/" class="btn btn-lg rounded-pill fw-semibold px-4 py-2 shadow-sm"
+           style="border: 2px solid var(--primary); color: var(--primary); transition: 0.3s;">
+            <i class="bi bi-arrow-left me-2"></i>Back to Home
+        </a>
+    </div>
+</div>
+
+<!-- Styles -->
+<style>
+    .privacy-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+        .privacy-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+        }
+
+    .animate-fade {
+        animation: fadeIn 1s ease-in-out;
+    }
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    ul.text-muted {
+        list-style: none;
+        padding-left: 0;
+    }
+
+        ul.text-muted li::before {
+            content: "• ";
+            color: var(--accent);
+            font-weight: bold;
+            margin-right: 6px;
+        }
+
+    a.btn:hover {
+        background-color: var(--primary);
+        color: #fff !important;
+    }
+</style>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

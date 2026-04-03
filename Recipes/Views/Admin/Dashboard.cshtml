@@ -1,0 +1,166 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .dash-card {
+        padding: 1.5rem;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+        text-align: center;
+        transition: 0.2s ease;
+    }
+
+        .dash-card:hover {
+            transform: translateY(-3px);
+        }
+
+    .section-btn {
+        width: 100%;
+        background: #222;
+        color: white;
+        border-radius: 8px;
+        padding: 12px;
+        margin-top: 25px;
+        font-size: 18px;
+        border: none;
+        transition: 0.2s ease;
+    }
+
+        .section-btn:hover {
+            background: #000;
+        }
+
+    .chart-section {
+        margin-top: 15px;
+        padding: 15px 10px;
+        background: #fafafa;
+        border-radius: 12px;
+        display: none; /* Hidden by default */
+    }
+
+    .bar-chart {
+        width: 100%;
+    }
+
+    .bar {
+        background: linear-gradient(90deg, #ff7f50, #ffb088);
+        height: 22px;
+        border-radius: 6px;
+        margin-bottom: 8px;
+    }
+
+    .bar-label {
+        font-weight: 600;
+        margin-bottom: 4px;
+        font-size: 14px;
+    }
+
+    .bar-wrapper {
+        background: #e8e8e8;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+</style>
+
+<script>
+    function toggleSection(id) {
+        var section = document.getElementById(id);
+        section.style.display = section.style.display === "none" ? "block" : "none";
+    }
+</script>
+
+<div class="container py-5">
+
+    <h1 class="fw-bold mb-4">Admin Dashboard</h1>
+
+    <!-- TOP CARDS -->
+    <div class="row g-4 mb-3">
+
+        <div class="col-md-3">
+            <div class="dash-card">
+                <h5>Total Users</h5>
+                <p class="fs-2 fw-bold">@ViewBag.TotalUsers</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="dash-card">
+                <h5>Total Recipes</h5>
+                <p class="fs-2 fw-bold">@ViewBag.TotalRecipes</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="dash-card">
+                <h5>Total Views</h5>
+                <p class="fs-2 fw-bold">@ViewBag.TotalViews</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="dash-card">
+                <h5>Flagged Recipes</h5>
+                <p class="fs-2 fw-bold text-danger">@ViewBag.FlaggedRecipes</p>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- COLLAPSIBLE SECTIONS -->
+    <!-- DAILY USERS -->
+    <button class="section-btn" onclick="toggleSection('usersSection')">📊 Daily Active Users</button>
+    <div id="usersSection" class="chart-section">
+        @foreach (var item in (Dictionary<string, int>)ViewBag.ActiveUsersDaily)
+        {
+            var percent = item.Value * 4;
+            <div class="bar-label">@item.Key (@item.Value users)</div>
+            <div class="bar-wrapper">
+                <div class="bar" style="width:@percent%;"></div>
+            </div>
+        }
+    </div>
+
+
+    <!-- RECIPES ADDED -->
+    <button class="section-btn" onclick="toggleSection('recipesSection')">📈 Recipes Added Per Day</button>
+    <div id="recipesSection" class="chart-section">
+        @foreach (var item in (Dictionary<string, int>)ViewBag.RecipesDaily)
+        {
+            var percent = item.Value * 5;
+            <div class="bar-label">@item.Key (@item.Value recipes)</div>
+            <div class="bar-wrapper">
+                <div class="bar" style="width:@percent%;"></div>
+            </div>
+        }
+    </div>
+
+
+    <!-- TOTAL VIEWS -->
+    <button class="section-btn" onclick="toggleSection('viewsSection')">🔥 Views Per Day</button>
+    <div id="viewsSection" class="chart-section">
+        @foreach (var item in (Dictionary<string, int>)ViewBag.ViewsDaily)
+        {
+            var percent = item.Value > 0 ? (item.Value / 5) : 0;
+            <div class="bar-label">@item.Key (@item.Value views)</div>
+            <div class="bar-wrapper">
+                <div class="bar" style="width:@percent%;"></div>
+            </div>
+        }
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="mt-5">
+        <a asp-controller="AdminRecipes" asp-action="Flagged" class="btn btn-danger me-2">
+            View Flagged Recipes
+        </a>
+
+        <a asp-controller="AdminUsers" asp-action="Index" class="btn btn-dark">
+            Manage Users
+        </a>
+    </div>
+
+</div>

@@ -1,0 +1,71 @@
+﻿@model List<Recipes.Models.ViewModels.UserAdminViewModel>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Manage Users";
+}
+
+<div class="container py-5">
+
+    <h2 class="fw-bold mb-4">Manage Users</h2>
+
+    <table class="table table-bordered table-striped bg-white">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Username</th>
+                <th>Diet</th>
+                <th>Date Joined</th>
+                <th>Recipes</th>
+                <th>Status</th>
+                <th width="240px">Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var u in Model)
+            {
+                <tr>
+                    <td>@u.Email</td>
+                    <td>@u.Username</td>
+                    <td>@u.DietOption</td>
+                    <td>@u.DateJoined.ToString("yyyy-MM-dd")</td>
+                    <td>@u.RecipeCount</td>
+
+                    <td>
+                        @if (u.IsBanned)
+                        {
+                            <span class="badge bg-danger">Banned</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                    </td>
+
+                    <td>
+                        @if (u.IsBanned)
+                        {
+                            <a asp-action="Unban" asp-route-id="@u.UserId"
+                               class="btn btn-sm btn-warning">Unban</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Ban" asp-route-id="@u.UserId"
+                               class="btn btn-sm btn-dark">Ban</a>
+                        }
+
+                        <a asp-action="Delete" asp-route-id="@u.UserId"
+                           class="btn btn-sm btn-danger ms-2"
+                           onclick="return confirm('Delete this user? All their recipes remain.')">
+                            Delete
+                        </a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+</div>

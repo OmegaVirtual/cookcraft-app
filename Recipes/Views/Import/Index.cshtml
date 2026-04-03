@@ -1,0 +1,177 @@
+﻿@{
+    ViewData["Title"] = "Import Recipe by Link";
+}
+
+<div class="container py-5">
+    <!-- 🌟 Header -->
+    <div class="text-center mb-5">
+        <h1 class="fw-bold display-4 text-gradient">
+            <i class="bi bi-cloud-arrow-down-fill me-2"></i> Import Recipe
+        </h1>
+        <p class="text-muted fs-5">Paste a recipe link below to automatically import it.</p>
+    </div>
+
+    <!-- ✅ Alerts -->
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger shadow-sm rounded-pill text-center">
+            <i class="bi bi-exclamation-circle me-2"></i>@TempData["ErrorMessage"]
+        </div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success shadow-sm rounded-pill text-center">
+            <i class="bi bi-check-circle me-2"></i>@TempData["SuccessMessage"]
+        </div>
+    }
+
+    <!-- 🌐 Import Card -->
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-dark text-light text-center fw-semibold py-3">
+                    <i class="bi bi-globe2 me-2 text-info"></i> Import Recipe from Website
+                </div>
+
+                <div class="card-body bg-light p-4">
+                    <form id="urlImportForm" method="post" asp-controller="Import" asp-action="ImportFromUrl" class="d-flex flex-column">
+                        @Html.AntiForgeryToken()
+
+                        <!-- URL Input -->
+                        <div class="input-group mb-3 shadow-sm">
+                            <span class="input-group-text bg-white border-0">
+                                <i class="bi bi-link-45deg text-muted fs-5"></i>
+                            </span>
+                            <input type="url" id="recipeUrl" name="recipeUrl" class="form-control border-0"
+                                   placeholder="https://example.com/recipe" required />
+                        </div>
+
+                        <!-- Hidden field for import -->
+                        <input type="hidden" id="hiddenRecipeUrl" name="recipeUrl" />
+
+                        <button type="button" id="previewBtn" class="btn btn-lg rounded-pill import-btn w-100 mb-3">
+                            <i class="bi bi-eye-fill me-2"></i> Preview Recipe
+                        </button>
+
+                        <!-- 🪄 Inline Preview -->
+                        <div id="previewCard" class="card border-0 shadow-sm d-none p-3 text-center fade-in">
+                            <img id="previewImage" src="" class="img-fluid rounded mb-3" style="max-height:200px; object-fit:cover;" />
+                            <h4 id="previewTitle" class="fw-bold mb-2"></h4>
+                            <p id="previewDescription" class="text-muted mb-3"></p>
+                            <button type="submit" class="btn btn-success rounded-pill px-4">
+                                <i class="bi bi-check-circle-fill me-1"></i> Import Recipe
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔙 Back -->
+    <div class="text-center mt-5">
+        <a asp-controller="Recipes" asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4 py-2">
+            <i class="bi bi-arrow-left-circle me-1"></i> Back to Recipe Library
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const previewBtn = document.getElementById("previewBtn");
+        const previewCard = document.getElementById("previewCard");
+        const previewImage = document.getElementById("previewImage");
+        const previewTitle = document.getElementById("previewTitle");
+        const previewDescription = document.getElementById("previewDescription");
+        const hiddenInput = document.getElementById("hiddenRecipeUrl");
+
+        previewBtn.addEventListener("click", async function () {
+            const recipeUrl = document.getElementById("recipeUrl").value.trim();
+            if (!recipeUrl) {
+                alert("Please enter a recipe URL.");
+                return;
+            }
+
+            hiddenInput.value = recipeUrl;
+
+            const response = await fetch("/Import/PreviewFromUrl", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "RequestVerificationToken": document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                },
+                       body: JSON.stringify({ recipeUrl }) // ✅ FIXED
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                previewImage.src = data.imageUrl;
+                previewTitle.textContent = data.title;
+                previewDescription.textContent = `Imported from ${data.source}`;
+                previewCard.classList.remove("d-none");
+                previewCard.scrollIntoView({ behavior: "smooth" });
+            } else {
+                alert(data.message || "Could not preview recipe.");
+            }
+        });
+    </script>
+
+}
+
+<!-- 🎨 Styles -->
+<style>
+    body {
+        background: linear-gradient(135deg, #f5f9ff, #eafaf1);
+    }
+
+    .text-gradient {
+        background: linear-gradient(90deg, #2bb673, #2ca8ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .import-btn {
+        background: linear-gradient(90deg, #2bb673, #2ca8ff);
+        color: white;
+        font-weight: 600;
+        border: none;
+        transition: 0.3s ease;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    }
+
+        .import-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+        }
+
+    .card {
+        border-radius: 1.5rem;
+        transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+        }
+
+    .fade-in {
+        animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

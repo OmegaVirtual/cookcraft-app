@@ -1,0 +1,174 @@
+﻿@model Recipes.Models.Recipe
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Recipe Details";
+    var user = User.Identity.IsAuthenticated ? await UserManager.GetUserAsync(User) : null;
+    var isOwnerOrAdmin = user != null && (Model.ApplicationUserId == user.Id || User.IsInRole("Admin"));
+}
+
+<div class="container py-5 pb-6">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold display-5" style="color: var(--primary);">@Model.Title</h1>
+        <p class="text-muted">@Model.ShortDescription</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <img src="@Model.ImageUrl" class="img-fluid rounded-4 shadow mb-5" alt="Recipe Image" style="width: 100%; object-fit: cover;" />
+
+            @if (Model.Allergens != null && Model.Allergens.Count > 0)
+            {
+                <div class="card shadow-sm p-4 mb-4" style="background-color: #fff0f0; border-radius: 20px;">
+                    <h4 class="fw-bold mb-3 text-danger">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>Contains Allergens
+                    </h4>
+                    <div class="d-flex flex-wrap gap-2">
+                        @foreach (var allergen in Model.Allergens)
+                        {
+                            <span class="badge bg-danger text-white fs-6 px-3 py-2 rounded-pill">@allergen</span>
+                        }
+                    </div>
+                </div>
+            }
+
+            @if (ViewBag.NutritionSummary != null)
+            {
+                <div class="card shadow-sm p-4 mb-4 bg-light border-0" style="border-radius: 20px;">
+                    <h4 class="fw-bold mb-3" style="color: var(--primary);">
+                        <i class="bi bi-bar-chart-fill me-2"></i>Nutrition Estimate (per recipe)
+                    </h4>
+                    <ul class="list-unstyled fs-5 text-dark">
+                        <li>🔥 Calories: <strong>@ViewBag.NutritionSummary.Calories</strong> kcal</li>
+                        <li>🍗 Protein: <strong>@ViewBag.NutritionSummary.Protein</strong> g</li>
+                        <li>🍚 Carbs: <strong>@ViewBag.NutritionSummary.Carbs</strong> g</li>
+                        <li>🥑 Fat: <strong>@ViewBag.NutritionSummary.Fat</strong> g</li>
+                    </ul>
+                </div>
+            }
+
+            @if (Model.Ingredients != null && Model.Ingredients.Any())
+            {
+                <div class="card p-4 shadow-sm mb-4 bg-white border-0" style="border-radius: 20px;">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="fw-bold mb-0" style="color: var(--primary);">
+                            <i class="bi bi-basket me-2"></i>Ingredients
+                        </h4>
+                        <div class="input-group" style="max-width: 180px;">
+                            <label class="input-group-text" for="scaleSelect">Scale</label>
+                            <select id="scaleSelect" class="form-select">
+                                <option value="1">1x</option>
+                                <option value="2">2x</option>
+                                <option value="3">3x</option>
+                                <option value="4">4x</option>
+                            </select>
+                        </div>
+                    </div>
+                    <ul class="list-group list-group-flush fs-5 text-dark" id="ingredientList">
+                        @foreach (var ingredient in Model.Ingredients)
+                        {
+                            <li class="list-group-item bg-transparent ps-0">
+                                <i class="bi bi-dot text-primary me-2"></i>@ingredient
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Model.Instructions))
+            {
+                <div class="card p-4 shadow-sm mb-4 bg-white border-0" style="border-radius: 20px;">
+                    <h4 class="fw-bold mb-4" style="color: var(--primary);">
+                        <i class="bi bi-list-check me-2"></i>Method of Cooking
+                    </h4>
+
+                    @{
+                        var steps = Model.Instructions
+                        .Split(new[] { '\n', '\r' }, System.StringSplitOptions.RemoveEmptyEntries)
+                        .Select(step => step.Trim())
+                        .ToList();
+                    }
+
+                    <div class="list-group list-group-flush">
+                        @foreach (var step in steps)
+                        {
+                            <div class="list-group-item bg-transparent ps-0 mb-3 d-flex align-items-start">
+                                <i class="bi bi-chevron-right text-accent me-3 fs-5" style="margin-top: 2px;"></i>
+                                <div class="fs-5 text-dark">@step</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+
+            <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+                <a asp-action="Index" class="btn btn-xl btn-outline-secondary rounded-pill px-4 py-3 fw-semibold">
+                    <i class="bi bi-arrow-left me-2"></i>Back
+                </a>
+
+                @if (isOwnerOrAdmin)
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-xl btn-warning text-dark rounded-pill px-4 py-3 fw-semibold">
+                        <i class="bi bi-pencil-square me-2"></i>Edit
+                    </a>
+                    <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-xl btn-danger rounded-pill px-4 py-3 fw-semibold" onclick="return confirm('Are you sure you want to delete this recipe?');">
+                            <i class="bi bi-trash me-2"></i>Delete
+                        </button>
+                    </form>
+                }
+
+                <a asp-action="ReadOnlyView" asp-route-id="@Model.Id" target="_blank" class="btn btn-xl btn-info text-white rounded-pill px-4 py-3 fw-semibold">
+                    <i class="bi bi-share me-2"></i>Share
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Ensure ingredient list is available
+        const originalIngredients = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Ingredients));
+        const ingredientList = document.getElementById('ingredientList');
+        const scaleSelect = document.getElementById('scaleSelect');
+
+        function updateIngredients(scale) {
+            ingredientList.innerHTML = '';
+            originalIngredients.forEach(ingredient => {
+                const updated = ingredient.replace(/^(\d+(\.\d+)?)/, match => {
+                    return (parseFloat(match) * scale).toFixed(2).replace(/\.00$/, '');
+                });
+                const li = document.createElement('li');
+                li.className = 'list-group-item bg-transparent ps-0';
+                li.innerHTML = `<i class="bi bi-dot text-primary me-2"></i>${updated}`;
+                ingredientList.appendChild(li);
+            });
+        }
+
+        if (scaleSelect) {
+            scaleSelect.addEventListener('change', () => {
+                const scale = parseFloat(scaleSelect.value);
+                updateIngredients(scale);
+            });
+        }
+    </script>
+
+
+    <style>
+        .btn-xl {
+            font-size: 1.15rem;
+            padding: 0.9rem 2rem;
+        }
+
+        .container.pb-6 {
+            padding-bottom: 6rem !important;
+        }
+    </style>
+}
+
+<!-- Include Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

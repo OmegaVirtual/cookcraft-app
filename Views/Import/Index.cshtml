@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Import Recipe";
+}
+
+<div class="container text-center my-5">
+    <h1 class="fw-bold" style="color: var(--primary); font-size: 2.5rem;">🔄 Import a Recipe</h1>
+    <p class="text-muted mb-4">Upload a .txt file or manually paste your recipe below.</p>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card p-4 shadow-sm mb-4">
+                <h4 class="mb-3">Upload .txt File</h4>
+                <form asp-action="UploadTxt" enctype="multipart/form-data" method="post">
+                    <input type="file" name="file" class="form-control mb-3" accept=".txt" required />
+                    <button type="submit" class="btn" style="background-color: var(--accent); color: white;">Upload and Import</button>
+                </form>
+            </div>
+
+            <div class="card p-4 shadow-sm">
+                <h4 class="mb-3">Manual Paste</h4>
+                <form asp-action="ManualPaste" method="post">
+                    <textarea name="pastedText" class="form-control mb-3" rows="10" placeholder="Paste your recipe text here..." required></textarea>
+                    <button type="submit" class="btn" style="background-color: var(--primary); color: white;">Paste and Import</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <a asp-controller="Recipes" asp-action="Index" class="btn btn-link mt-4">⬅️ Back to Recipes</a>
+</div>

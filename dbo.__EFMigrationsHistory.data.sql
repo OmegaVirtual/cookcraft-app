@@ -1,0 +1,7 @@
+﻿INSERT INTO [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'00000000000000_CreateIdentitySchema', N'8.0.11')
+INSERT INTO [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20250429182611_AddDietOptionAndRegistrationDate', N'8.0.11')
+INSERT INTO [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20250429192140_AddApplicationUserIdToRecipeProperly', N'8.0.11')
+INSERT INTO [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20250429192515_AddApplicationUserIdToRecipes', N'8.0.11')
+INSERT INTO [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20250429192631_Recipes_AddUserReference', N'8.0.11')
+INSERT INTO [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20250429212835_AddProfilePictureToUser', N'8.0.11')
+INSERT INTO [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20250429235231_AddFavoriteRecipeSupport', N'8.0.11')

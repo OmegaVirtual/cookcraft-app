@@ -1,0 +1,187 @@
+﻿@model Recipes.Models.ViewModels.GeneratedGroceryItemViewModel
+
+@{
+    ViewData["Title"] = "Generated Grocery List";
+}
+
+<section class="py-5 pb-6" style="background-color: var(--background);">
+    <div class="container">
+        <div class="text-center mb-5 animate-fade">
+            <h1 class="fw-bold display-4" style="color: var(--primary);">
+                <i class="bi bi-cart-check-fill me-2"></i>Your Smart Grocery List
+            </h1>
+            <p class="fs-5 text-muted">
+                Curated for you by <strong>CookCraft</strong> — fresh, balanced, and effortless.
+            </p>
+        </div>
+
+        <!-- Grocery List Form -->
+        <form asp-action="AddGeneratedItems" method="post">
+            @Html.AntiForgeryToken()
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                @for (int i = 0; i < Model.Items.Count; i++)
+                {
+                    var item = Model.Items[i];
+                    string badgeColor = item.Category.ToLower() switch
+                    {
+                        "fruit" => "#FF7F50",
+                        "vegetable" => "#2E8B57",
+                        "meat" => "#CD5C5C",
+                        "grain" => "#DAA520",
+                        "dairy" => "#4682B4",
+                        _ => "#808080"
+                    };
+
+                    string iconClass = item.Category.ToLower() switch
+                    {
+                        "fruit" => "bi-apple",
+                        "vegetable" => "bi-carrot",
+                        "meat" => "bi-drumstick",
+                        "grain" => "bi-basket3-fill",
+                        "dairy" => "bi-cup-straw",
+                        _ => "bi-bag-fill"
+                    };
+
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm rounded-4 grocery-card animate-fade"
+                             style="background-color: #fffdf9; border-left: 6px solid @badgeColor;">
+                            <div class="card-body d-flex flex-column justify-content-between">
+
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="icon-circle me-3" style="color: @badgeColor;">
+                                        <i class="bi @iconClass fs-2"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="card-title mb-1 fw-bold fs-5" style="color: var(--text-dark);">
+                                            @item.Name
+                                        </h5>
+                                        <span class="text-muted small">× @item.Quantity</span>
+                                    </div>
+                                </div>
+
+                                <span class="badge align-self-start mb-3"
+                                      style="background-color:@badgeColor; color:white;">
+                                    @item.Category
+                                </span>
+
+                                <div class="text-muted small">
+                                    ⚡ Est. @item.CaloriesPerUnit kcal / @item.ProteinPerUnit g protein per unit
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hidden inputs -->
+                        <input type="hidden" asp-for="@Model.Items[i].Name" />
+                        <input type="hidden" asp-for="@Model.Items[i].Category" />
+                        <input type="hidden" asp-for="@Model.Items[i].Quantity" />
+                        <input type="hidden" asp-for="@Model.Items[i].CaloriesPerUnit" />
+                        <input type="hidden" asp-for="@Model.Items[i].ProteinPerUnit" />
+                    </div>
+                }
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="text-center mt-5">
+                <button type="submit"
+                        class="btn btn-xl text-white rounded-pill fw-bold px-5 py-3 fs-5 shadow-sm"
+                        style="background: linear-gradient(90deg, var(--primary), var(--accent)); border: none;">
+                    <i class="bi bi-plus-circle me-2"></i>Add All to My List
+                </button>
+
+                <a href="/Grocery/List"
+                   class="btn btn-xl btn-outline-secondary rounded-pill px-5 py-3 fs-5 ms-3">
+                    <i class="bi bi-arrow-left-circle me-2"></i>Back to Planner
+                </a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <style>
+        /* 🥕 Fade animation */
+        .animate-fade {
+            animation: fadeInUp 0.8s ease both;
+        }
+
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 🍞 Card hover */
+        .grocery-card {
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+            .grocery-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 0.75rem 1.25rem rgba(0, 0, 0, 0.1);
+            }
+
+        /* 🧺 Icon styling */
+        .icon-circle {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(255, 127, 80, 0.08);
+        }
+
+        /* 🧡 Buttons */
+        .btn-xl {
+            font-size: 1.1rem;
+            padding: 0.8rem 1.6rem;
+        }
+
+        .btn-outline-secondary {
+            color: var(--accent);
+            border-color: var(--accent);
+            background-color: transparent;
+            transition: all 0.2s ease-in-out;
+        }
+
+            .btn-outline-secondary:hover {
+                color: #fff;
+                background-color: var(--accent);
+            }
+
+        /* 🪴 Page background */
+        section {
+            background: linear-gradient(180deg, var(--background) 0%, #fffaf5 100%);
+        }
+
+        .badge {
+            font-size: 0.85rem;
+            letter-spacing: 0.4px;
+        }
+
+        .card-title {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        .shadow-sm {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+        }
+
+        /* Consistency with CookCraft theme */
+        body {
+            background-color: var(--background);
+            color: var(--text-dark);
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+}
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

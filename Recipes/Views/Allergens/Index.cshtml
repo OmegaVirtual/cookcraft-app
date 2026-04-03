@@ -1,0 +1,333 @@
+﻿@{
+    ViewData["Title"] = "Allergen Management";
+}
+
+<section class="py-5 allergen-page">
+    <div class="text-center mb-5 fade-in">
+        <h1 class="fw-bold display-5" style="color: var(--primary);">
+            <i class="bi bi-shield-exclamation me-2"></i>Allergen Management
+        </h1>
+        <p class="text-muted fs-5 mb-2">
+            Automatically detect and visualize allergens across your recipes.
+        </p>
+        <div id="dataSource" class="text-muted small"></div>
+    </div>
+
+    <div class="container" style="max-width: 1200px;">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="allergenList">
+            <div class="text-center text-muted fs-5 py-5" id="loadingMsg">
+                <i class="bi bi-hourglass-split me-2"></i>Loading recipes and allergens...
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-5">
+
+    <div class="container" id="recipeSection" style="max-width: 1200px; display: none;">
+        <h3 class="fw-bold mb-4">
+            🍽️ Recipes containing <span id="selectedAllergen" class="text-primary"></span>
+        </h3>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="recipeList"></div>
+    </div>
+</section>
+
+<!-- ⚕️ Emergency Modal -->
+<div id="emergencyModal" class="custom-modal">
+    <div class="custom-modal-content rounded-4 shadow-lg">
+        <button class="close-btn" onclick="closeEmergencyModal()">&times;</button>
+        <h4 class="fw-bold text-danger mb-3 text-center">
+            <i class="bi bi-heart-pulse me-2"></i>Emergency Allergen Response
+        </h4>
+        <div id="emergencyContent" class="mt-3"></div>
+        <div class="text-center mt-4">
+            <button class="btn btn-outline-secondary rounded-pill px-4 py-2" onclick="closeEmergencyModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    :root {
+        --primary: #2563eb;
+        --accent: #10b981;
+        --danger: #ef4444;
+        --light-bg: #f8fafc;
+    }
+
+    body {
+        background: linear-gradient(to bottom right, #eef6ff, #ffffff);
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .card {
+        transition: all 0.25s ease-in-out;
+        border-radius: 1.25rem;
+        border-left: 5px solid transparent;
+    }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.1);
+        }
+
+    .custom-modal {
+        display: none;
+        position: fixed;
+        z-index: 1050;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.55);
+        backdrop-filter: blur(4px);
+        justify-content: center;
+        align-items: center;
+        animation: fadeIn 0.3s ease forwards;
+    }
+
+    .custom-modal-content {
+        background: #fff;
+        padding: 2rem;
+        max-width: 600px;
+        width: 90%;
+        border-radius: 1.5rem;
+        animation: zoomIn 0.3s ease;
+        text-align: left;
+        overflow-y: auto;
+        max-height: 85vh;
+    }
+
+    @@keyframes zoomIn {
+        from {
+            transform: scale(0.9);
+            opacity: 0;
+        }
+
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1.5rem;
+        font-size: 1.8rem;
+        cursor: pointer;
+        color: #555;
+        background: none;
+        border: none;
+    }
+
+        .close-btn:hover {
+            color: var(--danger);
+        }
+
+    .fade-in {
+        opacity: 0;
+        animation: fadeInUp 0.6s ease forwards;
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .emergency-section p {
+        margin-bottom: 0.8rem;
+        line-height: 1.6;
+    }
+
+    .emergency-step {
+        background: #fff3cd;
+        padding: 1rem;
+        border-radius: 0.75rem;
+        border-left: 5px solid var(--danger);
+        margin-top: 1rem;
+    }
+
+    @@media (max-width: 768px) {
+        .display-5 {
+            font-size: 1.75rem;
+        }
+
+        .card {
+            padding: 1rem !important;
+        }
+    }
+</style>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.js"></script>
+    <script>
+        const iconMap = {
+            milk: "bi-cup-straw", wheat: "bi-bread-slice", gluten: "bi-bread-slice", egg: "bi-egg-fried",
+            peanut: "bi-nut", nut: "bi-nut", shellfish: "bi-water", fish: "bi-droplet", soy: "bi-flower3",
+            sesame: "bi-flower3", celery: "bi-leaf", mustard: "bi-fire", lupin: "bi-flower1",
+            barley: "bi-basket3", mollusc: "bi-water", default: "bi-exclamation-triangle"
+        };
+
+        const emergencyTips = {
+            milk: `Avoid all dairy (milk, cheese, butter). Use epinephrine if severe symptoms appear.`,
+            wheat: `Avoid wheat/gluten. Seek help if swelling or trouble breathing occurs.`,
+            peanut: `Peanut allergies can be life-threatening. Carry and use an EpiPen immediately.`,
+            nut: `Avoid all nuts and nut oils. Check ingredient labels carefully.`,
+            fish: `Avoid fish and seafood sauces. Cross-contamination risk is high.`,
+            shellfish: `Avoid shrimp, crab, lobster. Call emergency services for throat swelling.`,
+            soy: `Avoid tofu, soy milk, soy sauce, and lecithin-based foods.`,
+            egg: `Avoid all egg-based foods. Severe reactions need immediate medical help.`,
+            sesame: `Avoid sesame seeds/oil found in bread, sauces, and condiments.`,
+            mustard: `Avoid mustard, dressings, and condiments. Severe cases may need epinephrine.`,
+            celery: `Avoid raw and cooked celery. Severe reactions can cause throat irritation.`,
+            barley: `Avoid gluten grains (barley, rye, wheat).`,
+            default: `Avoid exposure. Use epinephrine for severe symptoms and call emergency services.`
+        };
+
+        async function loadRecipes() {
+            try {
+                const res = await fetch('/api/recipes');
+                if (!res.ok) throw new Error("DB fetch failed");
+                const recipes = await res.json();
+                if (recipes && recipes.length > 0) {
+                    document.getElementById("dataSource").innerHTML =
+                        "📦 Data Source: <span class='text-success fw-semibold'>Database</span>";
+                    return recipes;
+                }
+                throw new Error("Empty DB data");
+            } catch {
+                document.getElementById("dataSource").innerHTML =
+                    "📁 Data Source: <span class='text-warning fw-semibold'>recipes.json</span>";
+                const res = await fetch('/Data/recipes.json');
+                return res.json();
+            }
+        }
+
+        loadRecipes().then(recipes => {
+            if (!recipes || recipes.length === 0) {
+                document.getElementById("loadingMsg").innerText = "No recipes found.";
+                return;
+            }
+
+            let allAllergens = [];
+            recipes.forEach(r => { if (r.allergens) allAllergens.push(...r.allergens); });
+            const uniqueAllergens = [...new Set(allAllergens)].sort((a, b) => a.localeCompare(b));
+
+            const list = document.getElementById("allergenList");
+            document.getElementById("loadingMsg").style.display = "none";
+
+            uniqueAllergens.forEach(name => {
+                const lower = name.toLowerCase();
+                const icon = iconMap[Object.keys(iconMap).find(k => lower.includes(k))] || iconMap.default;
+                const advice = emergencyTips[Object.keys(emergencyTips).find(k => lower.includes(k))] || emergencyTips.default;
+                const count = recipes.filter(r => r.allergens && r.allergens.includes(name)).length;
+
+                list.innerHTML += `
+                    <div class="col fade-in">
+                        <div class="card h-100 bg-white border-0 shadow-sm p-4" style="border-left-color:${getAccentColor(name)}">
+                            <h4 class="fw-bold text-primary mb-2">
+                                <i class="bi ${icon} text-danger me-2 fs-4"></i>${name}
+                            </h4>
+                            <p class="text-muted small mb-3">${count} recipe${count !== 1 ? 's' : ''} contain this allergen.</p>
+                            <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-outline-primary rounded-pill px-3 py-2 fs-6" onclick="viewRecipes('${name}')">
+                                    <i class="bi bi-book me-1"></i>Recipes
+                                </button>
+                                <button class="btn btn-outline-danger rounded-pill px-3 py-2 fs-6" onclick="openEmergencyModal('${name}', \`${advice}\`)">
+                                    <i class="bi bi-activity me-1"></i>Emergency
+                                </button>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+
+            window.recipeData = recipes;
+        });
+
+        function getAccentColor(name) {
+            const colors = ["#10b981", "#2563eb", "#f59e0b", "#ef4444", "#8b5cf6"];
+            return colors[name.length % colors.length];
+        }
+
+        function viewRecipes(allergen) {
+            const section = document.getElementById("recipeSection");
+            const title = document.getElementById("selectedAllergen");
+            const list = document.getElementById("recipeList");
+
+            const matches = (window.recipeData || []).filter(r => r.allergens && r.allergens.includes(allergen));
+            title.textContent = allergen;
+            list.innerHTML = "";
+
+            if (matches.length === 0) {
+                list.innerHTML = `<div class='alert alert-info'>No recipes found with this allergen.</div>`;
+            } else {
+                matches.forEach(r => {
+                    list.innerHTML += `
+                        <div class="col fade-in">
+                            <div class="card h-100 border-0 shadow-sm p-3 bg-light clickable" onclick="openRecipe(${r.id})">
+                                <h5 class="fw-bold text-primary">${r.title}</h5>
+                                <p class="text-muted small">${r.description || 'Imported recipe'}</p>
+                            </div>
+                        </div>`;
+                });
+            }
+
+            section.style.display = "block";
+            section.scrollIntoView({ behavior: "smooth" });
+        }
+
+        function openRecipe(id) {
+            window.location.href = `/Recipes/Details/${id}`;
+        }
+
+        function openEmergencyModal(name, advice) {
+            const modal = document.getElementById("emergencyModal");
+            const content = document.getElementById("emergencyContent");
+            content.innerHTML = `
+                <div class="emergency-section">
+                    <h5 class="text-danger fw-bold mb-3">${name} Allergen Alert</h5>
+                    <p>${advice}</p>
+                    <div class="emergency-step">
+                        <strong>🚨 What to do:</strong>
+                        <ul class="mt-2 mb-0">
+                            <li>Move the person away from the allergen source.</li>
+                            <li>If difficulty breathing, swelling, or dizziness — <strong>use epinephrine immediately.</strong></li>
+                            <li>Call emergency services (dial 911).</li>
+                            <li>Stay with the person until help arrives.</li>
+                        </ul>
+                    </div>
+                </div>`;
+            modal.style.display = "flex";
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeEmergencyModal() {
+            const modal = document.getElementById("emergencyModal");
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+
+        window.onclick = e => {
+            const modal = document.getElementById("emergencyModal");
+            if (e.target === modal) closeEmergencyModal();
+        };
+    </script>
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />

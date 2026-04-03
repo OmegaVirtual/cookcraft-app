@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Recipes.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        var user = await UserManager.GetUserAsync(User);
+        var profilePic = user?.ProfilePictureUrl ?? "/images/default-profile.png";
+        <!-- fallback if no photo uploaded -->
+
+        <li class="nav-item d-flex align-items-center">
+            <img src="@profilePic" class="rounded-circle me-2" style="width: 32px; height: 32px; object-fit: cover;" alt="Profile" />
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                Hello, @UserManager.GetUserName(User)!
+            </a>
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index")" method="post">
+                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
+    }
+</ul>

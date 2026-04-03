@@ -1,0 +1,57 @@
+﻿@page
+@model DownloadPersonalDataModel
+@{
+    ViewData["Title"] = "Download Personal Data";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold display-5 text-primary">
+            <i class="bi bi-shield-lock-fill me-2"></i>Download Your Personal Data
+        </h2>
+        <p class="text-muted fs-5">This includes all information we have collected from your profile, preferences, and connected services.</p>
+    </div>
+
+    @if (Model.PersonalData != null && Model.PersonalData.Count > 0)
+    {
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm rounded-4 p-4">
+                    <h5 class="fw-bold text-primary mb-4">
+                        <i class="bi bi-clipboard-data me-2"></i>Personal Data Summary
+                    </h5>
+
+                    <ul class="list-group list-group-flush mb-4">
+                        @foreach (var item in Model.PersonalData)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                <span><i class="bi bi-chevron-right text-muted me-2"></i><strong>@item.Key</strong></span>
+                                <span class="text-muted">@item.Value</span>
+                            </li>
+                        }
+                    </ul>
+
+                    <form method="post">
+                        <button type="submit" class="btn btn-success rounded-pill px-4 py-2 mb-3">
+                            <i class="bi bi-download me-2"></i>Download as JSON
+                        </button>
+                    </form>
+
+                    <a href="@Url.Page("/Account/Manage/PersonalData")" class="btn btn-outline-secondary rounded-pill">
+                        <i class="bi bi-arrow-left me-2"></i>Back to Personal Data
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center">
+            <i class="bi bi-info-circle me-2"></i>No personal data available to download.
+        </div>
+    }
+</div>
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

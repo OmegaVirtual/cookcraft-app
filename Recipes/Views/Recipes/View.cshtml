@@ -1,0 +1,417 @@
+﻿@using System.Security.Claims
+@model Recipes.Models.Recipe
+@{
+    ViewData["Title"] = Model.Title;
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    bool isOwner = Model.ApplicationUserId == currentUserId;
+}
+
+<div class="container py-5">
+    <!-- Header -->
+    <div class="row align-items-center mb-5">
+        <div class="col-md-6 mb-4 mb-md-0">
+            <div class="position-relative">
+                <img src="@Model.ImageUrl"
+                     alt="@Model.Title"
+                     class="img-fluid rounded-4 shadow-lg w-100"
+                     style="max-height:420px; object-fit:cover;">
+                <span class="position-absolute top-0 end-0 bg-success text-white px-3 py-1 rounded-start-pill shadow-sm fw-semibold">
+                    Imported from external source
+                </span>
+
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h1 class="fw-bold display-6">@Model.Title</h1>
+
+            <div id="autoAllergenBox" class="alert alert-danger mt-3 d-none shadow-sm rounded-3">
+                <h6 class="fw-bold mb-2">
+                    <i class="bi bi-exclamation-triangle-fill me-1"></i> Contains Allergens:
+                </h6>
+                <div id="autoAllergenList"></div>
+            </div>
+
+            @if (Model.ApplicationUser != null)
+            {
+                <p class="mt-4 mb-1">
+                    <i class="bi bi-person-circle text-success me-2"></i>
+                    <strong>Added by:</strong>
+                    <a asp-controller="Profile"
+                       asp-action="View"
+                       asp-route-id="@Model.ApplicationUser.Id"
+                       class="link-success fw-bold text-decoration-none">@Model.ApplicationUser.UserName</a>
+                </p>
+            }
+        </div>
+    </div>
+
+    <!-- Ingredients -->
+    @if (Model.Ingredients != null && Model.Ingredients.Any())
+    {
+        <div class="mb-5">
+            <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+                <h3 class="fw-bold text-success mb-0">
+                    <i class="bi bi-basket2-fill me-2"></i> Ingredients
+                </h3>
+
+                <div class="d-flex align-items-center">
+                    <label class="me-2 fw-semibold text-muted">Scale:</label>
+                    <select id="scaleSelector" class="form-select form-select-sm w-auto shadow-sm">
+                        <option value="0.5">½x</option>
+                        <option value="1" selected>1x</option>
+                        <option value="2">2x</option>
+                        <option value="4">4x</option>
+                        <option value="8">8x</option>
+                    </select>
+                </div>
+            </div>
+
+            <ul class="list-group list-group-flush rounded shadow-sm" id="ingredientList">
+                @foreach (var item in Model.Ingredients)
+                {
+                    <li class="list-group-item d-flex align-items-center">
+                        <i class="bi bi-check-circle text-success me-2"></i>
+                        <span class="ingredient-text flex-grow-1">@item</span>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
+    <!-- Method -->
+    <div class="mb-5">
+        <h3 class="fw-bold text-primary mb-3">
+            <i class="bi bi-journal-text me-2"></i> Method of Cooking
+        </h3>
+        <div class="bg-light p-3 rounded shadow-sm">
+            <pre class="m-0 text-dark fw-normal" style="white-space:pre-wrap;">@Model.Instructions</pre>
+        </div>
+    </div>
+
+    <!-- Nutrition -->
+    <div id="nutritionSection" class="mt-5">
+        <h3 class="fw-bold text-warning mb-3">
+            <i class="bi bi-activity me-2"></i> Estimated Nutrition (total recipe)
+        </h3>
+        <div class="row g-3 text-center" id="macroCards">
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
+                    <i class="bi bi-fire text-danger fs-2"></i><p class="fw-semibold mb-0">Calories</p>
+                    <h5 id="calories">-- kcal</h5>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
+                    <i class="bi bi-droplet-half text-primary fs-2"></i><p class="fw-semibold mb-0">Fat</p>
+                    <h5 id="fat">-- g</h5>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
+                    <i class="bi bi-egg-fried text-warning fs-2"></i><p class="fw-semibold mb-0">Protein</p>
+                    <h5 id="protein">-- g</h5>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
+                    <i class="bi bi-cup-straw text-success fs-2"></i><p class="fw-semibold mb-0">Carbs</p>
+                    <h5 id="carbs">-- g</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 text-center mt-3" id="microCards"></div>
+    </div>
+
+    <hr class="my-5" />
+    <div class="d-flex flex-wrap gap-3 justify-content-center mt-4">
+        <a asp-controller="Recipes" asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4 py-2">
+            <i class="bi bi-arrow-left-circle me-1"></i> Back to Library
+        </a>
+
+        @if (isOwner)
+        {
+            <a asp-controller="Recipes" asp-action="Edit" asp-route-id="@Model.Id"
+               class="btn btn-outline-primary rounded-pill px-4 py-2">
+                <i class="bi bi-pencil-square me-1"></i> Edit Recipe
+            </a>
+
+            <form asp-controller="Recipes" asp-action="Delete" asp-route-id="@Model.Id"
+                  method="post" onsubmit="return confirm('Delete this recipe?');" class="d-inline">
+                <button type="submit" class="btn btn-outline-danger rounded-pill px-4 py-2">
+                    <i class="bi bi-trash me-1"></i> Delete
+                </button>
+            </form>
+        }
+
+        <button type="button" class="btn btn-success rounded-pill px-4 py-2" onclick="shareRecipe()">
+            <i class="bi bi-share-fill me-1"></i> Share Recipe
+        </button>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const scaleSelector = document.getElementById("scaleSelector");
+        const ingredientList = document.getElementById("ingredientList");
+        const baseIngredients = Array.from(document.querySelectorAll(".ingredient-text")).map(el=>el.textContent.toLowerCase());
+        let currentScale = 1;
+
+        scaleSelector?.addEventListener("change",function(){
+            currentScale=parseFloat(this.value);
+            ingredientList.querySelectorAll(".ingredient-text").forEach((el,i)=>{
+                el.textContent=scaleIngredient(baseIngredients[i],currentScale);
+            });
+            analyzeRecipe();
+        });
+
+        function scaleIngredient(text,scale){
+            return text.replace(/(\d+([.,]?\d+)?)/g,(m)=>{
+                const num=parseFloat(m.replace(",","."));
+                if(isNaN(num))return m;
+                return (num*scale).toFixed(1).replace(/\.0$/,"");
+            });
+        }
+
+                const allergenKeywords = {
+            // 🥛 MILK / DAIRY
+            "milk": "Milk",
+            "cheese": "Milk",
+            "butter": "Milk",
+            "cream": "Milk",
+            "yogurt": "Milk",
+            "mozzarella": "Milk",
+            "cheddar": "Milk",
+            "parmesan": "Milk",
+            "whey": "Milk",
+            "casein": "Milk",
+
+            // 🥚 EGGS
+            "egg": "Eggs",
+            "mayonnaise": "Eggs",
+            "mayo": "Eggs",
+            "aioli": "Eggs",
+
+            // 🐟 FISH (all species)
+            "fish": "Fish",
+            "salmon": "Fish",
+            "cod": "Fish",
+            "tuna": "Fish",
+            "sea bass": "Fish",
+            "bass": "Fish",
+            "trout": "Fish",
+            "mackerel": "Fish",
+            "haddock": "Fish",
+            "anchovy": "Fish",
+            "pollock": "Fish",
+            "hake": "Fish",
+
+            // 🦐 CRUSTACEANS (shellfish)
+            "shrimp": "Shellfish (Crustaceans)",
+            "prawn": "Shellfish (Crustaceans)",
+            "prawns": "Shellfish (Crustaceans)",
+            "crab": "Shellfish (Crustaceans)",
+            "lobster": "Shellfish (Crustaceans)",
+            "langoustine": "Shellfish (Crustaceans)",
+            "crayfish": "Shellfish (Crustaceans)",
+
+            // 🐚 MOLLUSCS
+            "mussel": "Molluscs",
+            "mussels": "Molluscs",
+            "clam": "Molluscs",
+            "clams": "Molluscs",
+            "oyster": "Molluscs",
+            "scallop": "Molluscs",
+            "octopus": "Molluscs",
+            "squid": "Molluscs",
+            "calamari": "Molluscs",
+
+            // 🌾 GLUTEN
+            "wheat": "Gluten",
+            "flour": "Gluten",
+            "bread": "Gluten",
+            "breadcrumbs": "Gluten",
+            "pasta": "Gluten",
+            "noodles": "Gluten",
+            "semolina": "Gluten",
+            "bulgur": "Gluten",
+            "barley": "Gluten",
+            "rye": "Gluten",
+            "spelt": "Gluten",
+            "couscous": "Gluten",
+
+            // 🥜 PEANUTS
+            "peanut": "Peanuts",
+            "groundnut": "Peanuts",
+
+            // 🌰 TREE NUTS
+            "almond": "Tree Nuts",
+            "walnut": "Tree Nuts",
+            "hazelnut": "Tree Nuts",
+            "pistachio": "Tree Nuts",
+            "cashew": "Tree Nuts",
+            "macadamia": "Tree Nuts",
+            "pecan": "Tree Nuts",
+            "nut": "Tree Nuts",   // fallback
+            "pesto": "Tree Nuts", // pine nuts
+
+            // 🌱 SOY
+            "soy": "Soy",
+            "soya": "Soy",
+            "soybean": "Soy",
+            "tofu": "Soy",
+            "miso": "Soy",
+            "tempeh": "Soy",
+            "edamame": "Soy",
+
+            // 🟤 SESAME
+            "sesame": "Sesame",
+            "tahini": "Sesame",
+
+            // 🟡 MUSTARD
+            "mustard": "Mustard",
+            "dijon": "Mustard",
+
+            // 🌿 CELERY
+            "celery": "Celery",
+            "celeriac": "Celery",
+
+            // 🌸 LUPIN
+            "lupin": "Lupin",
+            "lupine": "Lupin",
+
+            // 💨 SULPHITES
+            "sulphite": "Sulphites",
+            "sulfite": "Sulphites",
+            "e220": "Sulphites",
+            "e221": "Sulphites",
+            "e222": "Sulphites",
+            "e223": "Sulphites",
+            "wine": "Sulphites",
+            "vinegar": "Sulphites"
+        };
+
+
+        const nutritionDB={
+        // kcal, protein, fat, carbs, salt, fiber, sugar, calcium, iron, vitC
+        "chicken":{kcal:239,protein:27,fat:14,carbs:0,salt:0.2,fiber:0,sugar:0,calcium:15,iron:1,vitC:0},
+        "beef":{kcal:250,protein:26,fat:15,carbs:0,salt:0.2,fiber:0,sugar:0,calcium:20,iron:2.5,vitC:0},
+        "pork":{kcal:242,protein:27,fat:14,carbs:0,salt:0.3,fiber:0,sugar:0,calcium:15,iron:1.1,vitC:0},
+        "salmon":{kcal:208,protein:20,fat:13,carbs:0,salt:0.1,fiber:0,sugar:0,calcium:10,iron:0.5,vitC:0},
+        "tuna":{kcal:132,protein:29,fat:1,carbs:0,salt:0.1,fiber:0,sugar:0,calcium:8,iron:1.3,vitC:0},
+        "shrimp":{kcal:99,protein:24,fat:0.3,carbs:0.2,salt:0.5,fiber:0,sugar:0,calcium:70,iron:1.8,vitC:0},
+        "egg":{kcal:155,protein:13,fat:11,carbs:1,salt:0.4,fiber:0,sugar:1,calcium:50,iron:1.2,vitC:0},
+        "milk":{kcal:42,protein:3.4,fat:1,carbs:5,salt:0.1,fiber:0,sugar:5,calcium:120,iron:0,vitC:0},
+        "cheese":{kcal:402,protein:25,fat:33,carbs:1,salt:1.8,fiber:0,sugar:1,calcium:721,iron:0.2,vitC:0},
+        "butter":{kcal:717,protein:1,fat:81,carbs:0,salt:1.5,fiber:0,sugar:0,calcium:20,iron:0,vitC:0},
+        "cream":{kcal:340,protein:2,fat:36,carbs:3,salt:0.1,fiber:0,sugar:3,calcium:60,iron:0,vitC:0},
+        "flour":{kcal:364,protein:10,fat:1,carbs:76,salt:0,fiber:2,sugar:0,calcium:20,iron:3,vitC:0},
+        "rice":{kcal:130,protein:3,fat:0.3,carbs:28,salt:0,fiber:0.4,sugar:0,calcium:10,iron:1,vitC:0},
+        "bread":{kcal:265,protein:9,fat:3,carbs:49,salt:0.5,fiber:2.7,sugar:5,calcium:100,iron:2,vitC:0},
+        "olive oil":{kcal:884,protein:0,fat:100,carbs:0,salt:0,fiber:0,sugar:0,calcium:0,iron:0,vitC:0},
+        "tomato":{kcal:18,protein:1,fat:0,carbs:4,salt:0,fiber:1.2,sugar:2.6,calcium:10,iron:0.3,vitC:14},
+        "potato":{kcal:77,protein:2,fat:0,carbs:17,salt:0,fiber:2.2,sugar:1,calcium:10,iron:0.3,vitC:20},
+        "carrot":{kcal:41,protein:1,fat:0,carbs:10,salt:0,fiber:2.8,sugar:5,calcium:33,iron:0.3,vitC:6},
+        "spinach":{kcal:23,protein:3,fat:0,carbs:4,salt:0,fiber:2.2,sugar:0,calcium:99,iron:2.7,vitC:28},
+        "broccoli":{kcal:34,protein:3,fat:0,carbs:7,salt:0,fiber:3,sugar:2,calcium:47,iron:0.7,vitC:89},
+        "apple":{kcal:52,protein:0,fat:0,carbs:14,salt:0,fiber:2.4,sugar:10,calcium:6,iron:0.1,vitC:5},
+        "banana":{kcal:89,protein:1,fat:0,carbs:23,salt:0,fiber:2.6,sugar:12,calcium:5,iron:0.3,vitC:9},
+        "orange":{kcal:47,protein:1,fat:0,carbs:12,salt:0,fiber:2.4,sugar:9,calcium:40,iron:0.1,vitC:53},
+        "garlic":{kcal:149,protein:6,fat:0,carbs:33,salt:0,fiber:2.1,sugar:1,calcium:181,iron:1.7,vitC:31},
+        "onion":{kcal:40,protein:1,fat:0,carbs:9,salt:0,fiber:1.7,sugar:4,calcium:23,iron:0.2,vitC:8},
+        "peas":{kcal:81,protein:5,fat:0,fiber:5,carbs:14,salt:0, sugar:6,calcium:25,iron:1.5,vitC:40},
+        "bean":{kcal:347,protein:21,fat:1,carbs:63,salt:0,fiber:15,sugar:3,calcium:120,iron:5,vitC:0},
+        "chickpea":{kcal:164,protein:9,fat:3,carbs:27,salt:0,fiber:8,sugar:5,calcium:49,iron:2.9,vitC:1},
+        "lentil":{kcal:116,protein:9,fat:0,carbs:20,salt:0,fiber:8,sugar:1,calcium:19,iron:3.3,vitC:4},
+        "avocado":{kcal:160,protein:2,fat:15,carbs:9,salt:0,fiber:7,sugar:0.7,calcium:12,iron:0.6,vitC:10},
+        "mushroom":{kcal:22,protein:3,fat:0,carbs:3,salt:0,fiber:1,sugar:2,calcium:3,iron:0.5,vitC:2},
+        "pepper":{kcal:31,protein:1,fat:0,carbs:6,salt:0,fiber:2,sugar:4,calcium:7,iron:0.4,vitC:80}
+        };
+
+        function analyzeRecipe(){
+            const text=baseIngredients.join(" ");
+            let foundAllergens=[...new Set(Object.entries(allergenKeywords)
+                .filter(([k])=>text.includes(k)).map(([,v])=>v))];
+
+            const allergenBox=document.getElementById("autoAllergenBox");
+            const allergenList=document.getElementById("autoAllergenList");
+            if(foundAllergens.length){
+                allergenBox.classList.remove("d-none");
+                allergenList.innerHTML=foundAllergens.map(a=>`<span class='badge bg-danger bg-opacity-75 me-1 mb-1'>${a}</span>`).join("");
+            }
+
+            let totals={kcal:0,protein:0,fat:0,carbs:0,salt:0,fiber:0,sugar:0,calcium:0,iron:0,vitC:0};
+            Object.entries(nutritionDB).forEach(([k,v])=>{
+                if(text.includes(k)){
+                    for(const key in v)totals[key]+=v[key]*currentScale;
+                }
+            });
+
+            document.getElementById("calories").textContent=`~${Math.round(totals.kcal)} kcal`;
+            document.getElementById("fat").textContent=`${totals.fat.toFixed(1)} g`;
+            document.getElementById("protein").textContent=`${totals.protein.toFixed(1)} g`;
+            document.getElementById("carbs").textContent=`${totals.carbs.toFixed(1)} g`;
+
+            document.getElementById("microCards").innerHTML=`
+                <div class='col-4 col-md-2 mx-auto'><div class='card border-0 shadow-sm rounded-4 p-2 bg-white'>
+                <i class='bi bi-droplet text-primary fs-5'></i><p class='small fw-semibold mb-0'>Salt</p><p class='fw-bold mb-0'>${totals.salt.toFixed(1)} g</p></div></div>
+                <div class='col-4 col-md-2 mx-auto'><div class='card border-0 shadow-sm rounded-4 p-2 bg-white'>
+                <i class='bi bi-flower2 text-success fs-5'></i><p class='small fw-semibold mb-0'>Fiber</p><p class='fw-bold mb-0'>${totals.fiber.toFixed(1)} g</p></div></div>
+                <div class='col-4 col-md-2 mx-auto'><div class='card border-0 shadow-sm rounded-4 p-2 bg-white'>
+                <i class='bi bi-cup-straw text-warning fs-5'></i><p class='small fw-semibold mb-0'>Sugar</p><p class='fw-bold mb-0'>${totals.sugar.toFixed(1)} g</p></div></div>
+                <div class='col-4 col-md-2 mx-auto'><div class='card border-0 shadow-sm rounded-4 p-2 bg-white'>
+                <i class='bi bi-droplet-half text-info fs-5'></i><p class='small fw-semibold mb-0'>Calcium</p><p class='fw-bold mb-0'>${totals.calcium.toFixed(0)} mg</p></div></div>
+                <div class='col-4 col-md-2 mx-auto'><div class='card border-0 shadow-sm rounded-4 p-2 bg-white'>
+                <i class='bi bi-moon-stars text-secondary fs-5'></i><p class='small fw-semibold mb-0'>Iron</p><p class='fw-bold mb-0'>${totals.iron.toFixed(1)} mg</p></div></div>
+                <div class='col-4 col-md-2 mx-auto'><div class='card border-0 shadow-sm rounded-4 p-2 bg-white'>
+                <i class='bi bi-sun-fill text-danger fs-5'></i><p class='small fw-semibold mb-0'>Vitamin C</p><p class='fw-bold mb-0'>${totals.vitC.toFixed(1)} mg</p></div></div>`;
+        }
+
+        function shareRecipe(){
+            if(navigator.share){
+                navigator.share({title:'@Model.Title',text:'Check out this recipe!',url:window.location.href});
+            }else{
+                navigator.clipboard.writeText(window.location.href);
+                alert("Recipe link copied!");
+            }
+        }
+        analyzeRecipe();
+    </script>
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg,#f5f9ff,#eafaf1);
+    }
+
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+    }
+
+    pre {
+        background: transparent;
+        border: none;
+    }
+
+    .list-group-item {
+        border: none;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+        .list-group-item:last-child {
+            border-bottom: none;
+        }
+    @@media(max - width:768px) {
+        h1, h3 {
+            font-size: 1.5rem;
+        }
+
+        .card h5 {
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

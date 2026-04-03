@@ -1,0 +1,69 @@
+﻿@model List<Recipes.Models.Recipe>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Manage Recipes";
+}
+
+<div class="container py-5">
+
+    <h2 class="fw-bold mb-4">Manage Recipes</h2>
+
+    <!-- Search -->
+    <form method="get" class="mb-4">
+        <input name="search" class="form-control" placeholder="Search recipes..." />
+    </form>
+
+    <!-- Recipes Table -->
+    <table class="table table-bordered table-striped bg-white">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Recipe</th>
+                <th>Flagged?</th>
+                <th>Views</th>
+                <th>User</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var r in Model)
+            {
+                <tr>
+                    <td>@r.Id</td>
+                    <td>@r.Title</td>
+
+                    <td>
+                        @if (r.FlaggedForReview)
+                        {
+                            <span class="badge bg-danger">Flagged</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">OK</span>
+                        }
+                    </td>
+
+                    <td>@r.Views</td>
+                    <td>@r.ApplicationUserId</td>
+
+                    <td>
+                        <a asp-controller="Recipes" asp-action="View" asp-route-id="@r.Id"
+                           class="btn btn-sm btn-primary">View</a>
+
+                        <a asp-controller="Recipes" asp-action="Edit" asp-route-id="@r.Id"
+                           class="btn btn-sm btn-warning">Edit</a>
+
+                        <form asp-action="Delete" asp-route-id="@r.Id" method="post" class="d-inline"
+                              onsubmit="return confirm('Delete this recipe?');">
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+</div>

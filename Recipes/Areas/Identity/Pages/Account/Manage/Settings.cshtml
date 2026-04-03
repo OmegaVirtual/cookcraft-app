@@ -1,0 +1,246 @@
+﻿@page
+@model Recipes.Areas.Identity.Pages.Account.Manage.SettingsModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Settings";
+}
+
+<section class="py-5 pb-6" style="background-color: var(--background);">
+    <div class="container-fluid px-4">
+        <div class="row">
+
+            <!-- SIDEBAR -->
+            <div class="col-lg-3 mb-5 sidebar-mobile">
+                <div class="sidebar-card p-4 rounded-4 shadow-sm">
+
+                    <a asp-page="./Index" class="sidebar-link">
+                        <i class="bi bi-person-circle me-2"></i> Profile
+                    </a>
+
+                    <a asp-page="./Settings" class="sidebar-link active">
+                        <i class="bi bi-gear me-2"></i> Settings
+                    </a>
+
+                </div>
+            </div>
+
+            <!-- CONTENT -->
+            <div class="col-lg-9">
+                <h2 class="fw-bold display-6 mb-4 text-start" style="color: var(--primary);">
+                    <i class="bi bi-gear-wide-connected me-2"></i> Account Settings
+                </h2>
+
+                <partial name="_StatusMessage" for="StatusMessage" />
+
+                <div class="card premium-card rounded-4 p-4 p-md-5 shadow-lg border-0">
+
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="row gy-4">
+
+                            <!-- PROFILE PICTURE -->
+                            <div class="col-md-4 text-center mb-4">
+
+                                <label class="form-label fw-bold mb-2 text-primary d-block">
+                                    Profile Picture
+                                </label>
+
+                                <img src="@(!string.IsNullOrEmpty(Model.ProfilePictureUrl) ? Model.ProfilePictureUrl : "/images/default-profile.png")"
+                                     class="rounded-circle shadow profile-photo mb-3" />
+
+                                <div class="upload-btn-wrapper w-100">
+                                    <input type="file" asp-for="Upload"
+                                           class="form-control premium-input file-input-mobile" />
+                                </div>
+                            </div>
+
+                            <!-- RIGHT SIDE FORM -->
+                            <div class="col-md-8">
+
+                                <!-- EMAIL -->
+                                <div class="mb-4">
+                                    <label asp-for="Email" class="form-label fw-semibold text-primary">
+                                        Email Address
+                                    </label>
+                                    <input asp-for="Email" class="form-control premium-input" />
+                                    <span asp-validation-for="Email" class="text-danger small"></span>
+                                </div>
+
+                                <!-- DIET -->
+                                <div class="mb-4">
+                                    <label asp-for="DietOption" class="form-label fw-semibold text-primary">
+                                        Dietary Preference
+                                    </label>
+                                    <select asp-for="DietOption" class="form-select premium-input">
+                                        <option value="">-- Select Diet --</option>
+                                        <option>Vegan</option>
+                                        <option>Vegetarian</option>
+                                        <option>Keto</option>
+                                        <option>Paleo</option>
+                                        <option>Standard</option>
+                                        <option>Mediterranean</option>
+                                        <option>Low-Carb</option>
+                                        <option>High-Protein</option>
+                                        <option>Gluten-Free</option>
+                                        <option>Dairy-Free</option>
+                                        <option>Pescatarian</option>
+                                        <option>Flexitarian</option>
+                                    </select>
+                                </div>
+
+                                <!-- BUTTONS -->
+                                <div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch mt-4 gap-3">
+
+                                    <a asp-page="./ChangePassword"
+                                       class="btn btn-outline-secondary btn-xl rounded-pill fw-semibold shadow-sm w-100 text-center">
+                                        <i class="bi bi-key me-2"></i> Change Password
+                                    </a>
+
+                                    <button type="submit"
+                                            class="btn btn-xl rounded-pill fw-semibold text-white premium-save-btn shadow w-100 text-center">
+                                        <i class="bi bi-save me-2"></i> Save Changes
+                                    </button>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- DELETE ACCOUNT BUTTON (OUTSIDE THE PROFILE FORM) -->
+                    <div class="mt-4">
+                        <form method="post" asp-page-handler="DeleteAccount"
+                              onsubmit="return confirm('⚠️ Are you sure you want to permanently delete your account? This action cannot be undone.');">
+
+                            <button type="submit"
+                                    class="btn btn-danger btn-xl rounded-pill fw-semibold shadow w-100 text-center"
+                                    style="background: #d9534f; border: none;">
+                                <i class="bi bi-trash me-2"></i> Delete My Account
+                            </button>
+                        </form>
+                    </div>
+
+
+
+<!-- RESPONSIVE FIXES + MOBILE OPTIMIZATION -->
+<style>
+
+    /* MOBILE FIXES */
+    @@media (max-width: 768px) {
+        /* Sidebar goes full width and moves on top */
+        .sidebar-mobile {
+            order: -1;
+        }
+
+        .sidebar-card {
+            padding: 1.3rem !important;
+        }
+
+        .profile-photo {
+            width: 130px !important;
+            height: 130px !important;
+        }
+
+        .file-input-mobile {
+            font-size: 0.9rem !important;
+            padding: 0.6rem !important;
+        }
+
+        .btn-xl {
+            font-size: 1rem !important;
+            padding: 0.9rem !important;
+        }
+    }
+
+    @@media (max-width: 480px) {
+
+        .profile-photo {
+            width: 110px !important;
+            height: 110px !important;
+        }
+
+        .premium-card {
+            padding: 1.5rem !important;
+        }
+
+        .sidebar-link {
+            font-size: 1rem !important;
+        }
+    }
+
+    /* Sidebar Card */
+    .sidebar-card {
+        background: #ffffff;
+        border: 2px solid #e5e9ef;
+        border-radius: 20px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    }
+
+    .sidebar-link {
+        display: block;
+        padding: 0.9rem 1.3rem;
+        margin-bottom: 0.8rem;
+        font-size: 1.15rem;
+        font-weight: 600;
+        border-radius: 14px;
+        color: var(--text-dark);
+        background: #fdfdfd;
+        border: 2px solid transparent;
+        transition: all 0.25s ease;
+        text-decoration: none !important;
+    }
+
+        .sidebar-link:hover {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            transform: translateX(6px);
+        }
+
+        .sidebar-link.active {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white !important;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateX(4px);
+        }
+
+    .premium-card {
+        background: #fff;
+        border-radius: 24px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+    }
+
+    .profile-photo {
+        width: 165px;
+        height: 165px;
+        border: 5px solid var(--accent);
+        object-fit: cover;
+    }
+
+    .premium-input {
+        background: #ffffff;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 1.05rem;
+        padding: 0.85rem 1rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        transition: 0.2s;
+    }
+
+        .premium-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 0.2rem rgba(255,130,100,0.2);
+        }
+
+    .premium-save-btn {
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        border: none;
+    }
+
+    .btn-xl {
+        font-size: 1.2rem;
+        padding: 1rem 2.2rem;
+    }
+</style>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

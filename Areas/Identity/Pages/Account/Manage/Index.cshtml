@@ -1,0 +1,237 @@
+﻿@page
+@model Recipes.Areas.Identity.Pages.Account.Manage.IndexModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "My Profile";
+}
+
+<section class="py-5 pb-6" style="background-color: var(--background);">
+    <div class="container-fluid px-4">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 mb-5 d-flex flex-column align-items-start">
+                <div class="w-100">
+                    <a class="btn btn-xl btn-accent rounded-pill fw-bold text-white w-100 mb-3 @(ViewData["Title"].ToString() == "My Profile" ? "active" : "")" asp-page="./Index">
+                        <i class="bi bi-person-badge me-2"></i>Profile
+                    </a>
+                    <a class="btn btn-xl btn-outline-primary rounded-pill fw-bold w-100" asp-page="./Settings">
+                        <i class="bi bi-gear me-2"></i>Settings
+                    </a>
+                </div>
+            </div>
+
+            <!-- Profile Content -->
+            <div class="col-lg-9">
+                <h2 class="fw-bold display-4 mb-5" style="color: var(--primary);">
+                    <i class="bi bi-person-circle me-2"></i>My Profile
+                </h2>
+
+                <partial name="_StatusMessage" for="StatusMessage" />
+
+                <!-- Profile Image -->
+                <div class="d-flex justify-content-center mb-4">
+                    <img src="@(!string.IsNullOrEmpty(Model.ProfilePictureUrl) ? Model.ProfilePictureUrl : "/images/default-profile.png")"
+                         alt="Profile Picture"
+                         class="rounded-circle shadow"
+                         style="width: 160px; height: 160px; object-fit: cover; border: 6px solid var(--accent);" />
+                </div>
+
+                <!-- Stat Cards Grid -->
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <div class="col d-flex fade-in">
+                        <div class="stat-card w-100">
+                            <div class="icon">🥗</div>
+                            <div class="label-lg">Diet Option</div>
+                            <div class="value">@Model.DietOption</div>
+                        </div>
+                    </div>
+
+                    <div class="col d-flex fade-in">
+                        <div class="stat-card w-100">
+                            <div class="icon">📅</div>
+                            <div class="label-lg">Registered On</div>
+                            <div class="value">@Model.RegistrationDate.ToString("yyyy-MM-dd")</div>
+                        </div>
+                    </div>
+
+                    <div class="col d-flex fade-in">
+                        <div class="stat-card w-100">
+                            <div class="icon">📚</div>
+                            <div class="label-lg">Recipes Added</div>
+                            <div class="value">@Model.RecipeCount</div>
+                        </div>
+                    </div>
+
+                    <div class="col d-flex fade-in">
+                        <div class="stat-card w-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <div class="icon">🎖️</div>
+                                <div class="label-lg">Level</div>
+                                <div class="value">@Model.Badge</div>
+                                <div class="progress mt-2" style="height: 20px; border-radius: 10px;">
+                                    <div class="progress-bar bg-success fw-semibold fs-6" role="progressbar"
+                                         style="width: @Model.ProgressPercent%"
+                                         aria-valuenow="@Model.ProgressPercent" aria-valuemin="0" aria-valuemax="100">
+                                        @Model.ProgressPercent%
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col d-flex fade-in">
+                        <div class="stat-card w-100">
+                            <div class="icon">🎯</div>
+                            <div class="label-lg">Weekly Challenge</div>
+                            <div class="value text-success">@Model.WeeklyChallenge</div>
+                        </div>
+                    </div>
+
+                    <div class="col d-flex fade-in">
+                        <div class="stat-card w-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <div class="icon">🏆</div>
+                                <div class="label-lg mb-2">Top CookCrafters</div>
+                                <ul class="list-unstyled fs-6 mb-2 value">
+                                    @foreach (var user in Model.TopUsers)
+                                    {
+                                        <li><i class="bi bi-award-fill me-1 text-warning"></i><strong>@user.Username</strong> — @user.Count recipes</li>
+                                    }
+                                </ul>
+                            </div>
+                            @if (Model.MyRank > 3)
+                            {
+                                <div class="text-muted small mt-auto">
+                                    You are ranked <strong>#@Model.MyRank</strong> overall.
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <style>
+        .btn-xl {
+            font-size: 1.25rem;
+            padding: 1rem 2.2rem;
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+            border: none;
+        }
+
+        .btn-outline-primary {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            background-color: transparent;
+        }
+
+            .btn-outline-primary:hover {
+                background-color: var(--primary);
+                color: #fff;
+            }
+
+        .stat-card {
+            background-color: white;
+            color: #000;
+            border: 2px solid #e2e8f0;
+            border-left: 5px solid var(--primary);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+            .stat-card .icon {
+                font-size: 2rem;
+                margin-bottom: 0.5rem;
+            }
+
+        .label-lg {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.4rem;
+        }
+
+        .stat-card .value {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        section.pb-6 {
+            padding-bottom: 6rem !important;
+        }
+
+        /* ✨ Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+            .fade-in:nth-child(1) {
+                animation-delay: 0.1s;
+            }
+
+            .fade-in:nth-child(2) {
+                animation-delay: 0.2s;
+            }
+
+            .fade-in:nth-child(3) {
+                animation-delay: 0.3s;
+            }
+
+            .fade-in:nth-child(4) {
+                animation-delay: 0.4s;
+            }
+
+            .fade-in:nth-child(5) {
+                animation-delay: 0.5s;
+            }
+
+            .fade-in:nth-child(6) {
+                animation-delay: 0.6s;
+            }
+
+        @@keyframes fadeInUp {
+            to
+
+        {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        /* 📱 Mobile Adjustments */
+        @@media (max-width: 768px) {
+            .stat-card
+
+        {
+            padding: 1.25rem;
+        }
+
+        .label-lg {
+            font-size: 1.1rem;
+        }
+
+        .stat-card .value {
+            font-size: 1.1rem;
+        }
+
+        }
+    </style>
+}
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

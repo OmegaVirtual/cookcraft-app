@@ -1,0 +1,152 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Recipes.Models.ViewModels
+@inject UserManager<ApplicationUser> UserManager
+@model RecipeListViewModel
+
+@{
+    ViewData["Title"] = "Recipe Library";
+    var user = User.Identity.IsAuthenticated ? await UserManager.GetUserAsync(User) : null;
+}
+
+<!-- ... other code unchanged ... -->
+
+<div class="container pb-5">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var recipe in Model.Recipes)
+        {
+            var isPopular = recipe.Ingredients?.Count >= 6;
+            var isFavorite = user != null && user.FavoriteRecipeIds?.Contains(recipe.Id) == true;
+            var isOwnerOrAdmin = user != null && (recipe.ApplicationUserId == user.Id || User.IsInRole("Admin"));
+
+            <div class="col">
+                <div class="card h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative bg-dark text-light">
+                    <img src="@recipe.ImageUrl" class="card-img-top" alt="Recipe Image" style="height: 250px; object-fit: cover;" />
+
+                    @if (isPopular)
+                    {
+                        <span class="position-absolute top-0 start-0 bg-warning text-dark px-3 py-1 rounded-end rounded-bottom fw-bold">
+                            <i class="bi bi-fire me-1"></i>Popular
+                        </span>
+                    }
+
+                    <div class="card-body text-center d-flex flex-column justify-content-between">
+                        <div>
+                            <h5 class="card-title fw-bold mb-2" style="color: var(--accent);">@recipe.Title</h5>
+                            <p class="text-muted" style="min-height: 60px;">@recipe.ShortDescription</p>
+
+                            @if (recipe.Allergens != null && recipe.Allergens.Any())
+                            {
+                                <div class="mt-2">
+                                    @foreach (var allergen in recipe.Allergens.Take(3))
+                                    {
+                                        <span class="badge bg-danger me-1">@allergen</span>
+                                    }
+                                </div>
+                            }
+                        </div>
+
+                        <div class="mt-4 d-flex flex-wrap justify-content-center gap-3">
+                            <button type="button" class="btn @(isFavorite ? "btn-success" : "btn-outline-light") btn-lg rounded-pill px-4 fw-semibold favorite-btn" data-recipe-id="@recipe.Id">
+                                <i class="bi @(isFavorite ? "bi-heart-fill" : "bi-heart") me-2"></i>
+                                @(isFavorite ? "Favorited" : "Favorite")
+                            </button>
+
+                            <a asp-action="View" asp-route-id="@recipe.Id" class="btn btn-outline-success btn-lg rounded-pill px-4 fw-semibold">
+                                <i class="bi bi-book me-2"></i>View
+                            </a>
+
+                            @if (isOwnerOrAdmin)
+                            {
+                                <a asp-action="Edit" asp-route-id="@recipe.Id" class="btn btn-warning btn-lg rounded-pill px-4 fw-semibold">
+                                    <i class="bi bi-pencil-square me-2"></i>Edit
+                                </a>
+                                <form asp-action="Delete" asp-route-id="@recipe.Id" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-danger btn-lg rounded-pill px-4 fw-semibold" onclick="return confirm('Are you sure you want to delete this recipe?');">
+                                        <i class="bi bi-trash3 me-2"></i>Delete
+                                    </button>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+<!-- 📄 Pagination -->
+@if (Model.TotalPages > 1)
+{
+    <div class="d-flex justify-content-center mt-5 mb-5">
+        <nav>
+            <ul class="pagination pagination-lg">
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                        <a class="page-link rounded-pill fs-5"
+                           asp-action="Index"
+                           asp-route-page="@i"
+                           asp-route-search="@Model.SearchTerm"
+                           asp-route-sort="@Model.SortOrder">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.favorite-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const recipeId = this.getAttribute('data-recipe-id');
+
+                fetch('/Recipes/Favorite/' + recipeId, {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                    }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            this.classList.toggle('btn-outline-light');
+                            this.classList.toggle('btn-success');
+                            this.innerHTML = this.classList.contains('btn-success')
+                                ? '<i class="bi bi-heart-fill me-2"></i>Favorited'
+                                : '<i class="bi bi-heart me-2"></i>Favorite';
+                        }
+                    });
+            });
+        });
+    </script>
+
+    <style>
+        .btn-xl {
+            font-size: 1.25rem;
+            padding: 1rem 2rem;
+        }
+
+        .premium-btn {
+            background-color: var(--accent);
+            color: #1f2937;
+            font-weight: 700;
+            transition: all 0.3s ease-in-out;
+        }
+
+            .premium-btn:hover {
+                background-color: #e6c200;
+                color: #000;
+                transform: scale(1.05);
+            }
+
+        .container.pb-5 {
+            padding-bottom: 6rem !important; /* Ensures nothing hides under bottom nav/footer */
+        }
+    </style>
+}
+
+<!-- Include Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

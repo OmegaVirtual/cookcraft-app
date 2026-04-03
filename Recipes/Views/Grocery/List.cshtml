@@ -1,0 +1,291 @@
+﻿@model IEnumerable<Recipes.Models.GroceryItem>
+
+@{
+    ViewData["Title"] = "Grocery Planner";
+
+    var totalItems = Model.Count();
+    var boughtItems = Model.Count(x => x.IsBought);
+    var progress = totalItems > 0 ? (boughtItems * 100 / totalItems) : 0;
+
+    var categoryCounts = Model
+        .GroupBy(i => i.Category)
+        .Select(g => new { Category = g.Key, Count = g.Count() })
+        .ToList();
+
+    var categoryLabels = string.Join(",", categoryCounts.Select(c => $"'{c.Category}'"));
+    var categoryData = string.Join(",", categoryCounts.Select(c => c.Count));
+    var listNames = ViewBag.AllListNames as List<string> ?? new List<string>();
+}
+
+<section class="py-5 pb-6" style="background-color: var(--background, #f9f7f4);">
+    <div class="text-center mb-5 animate-fade">
+        <h1 class="fw-bold display-5" style="color: var(--primary);">
+            🛒 Grocery Planner
+        </h1>
+        <p class="text-muted fs-5">Plan smart, shop smarter.</p>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress mx-auto mb-5 shadow-sm rounded-pill" style="height: 28px; max-width: 500px; background-color: #f3e6dd;">
+        <div class="progress-bar fw-bold text-light"
+             role="progressbar"
+             style="width:@progress%; background: linear-gradient(90deg, var(--accent), var(--primary));"
+             aria-valuenow="@progress" aria-valuemin="0" aria-valuemax="100">
+            @progress% Completed
+        </div>
+    </div>
+
+    <!-- Search Bar -->
+    <form asp-action="List" method="get" class="d-flex justify-content-center flex-wrap gap-2 mb-4 px-3">
+        <input type="text" name="searchTerm"
+               class="form-control shadow-sm rounded-pill px-4 py-3 fs-5 flex-grow-1"
+               placeholder="🔍 Search groceries..." style="max-width: 400px;" />
+        <button type="submit" class="btn btn-xl rounded-pill px-4 py-2 fs-5 text-white search-btn">
+            <i class="bi bi-search me-1"></i>Search
+        </button>
+    </form>
+
+    <!-- Action Buttons -->
+    <div class="mb-5 d-flex justify-content-center flex-wrap gap-3">
+        <a href="/Grocery/Generate" class="btn btn-xl text-white rounded-pill fw-bold px-5 py-3 fs-5 shadow action-btn">
+            <i class="bi bi-stars me-2"></i>Generate Smart Grocery List
+        </a>
+        <a href="/Recipes/PickIngredients" class="btn btn-xl text-white rounded-pill fw-bold px-5 py-3 fs-5 shadow action-btn-alt">
+            <i class="bi bi-list me-2"></i>Find by Ingredients
+        </a>
+    </div>
+
+    <!-- Add Grocery Form -->
+    <div class="container bg-white rounded-4 shadow-sm p-4 mb-5" style="max-width: 1000px; border-left: 6px solid var(--accent);">
+        <form asp-action="Add" method="post" class="row g-3 align-items-center">
+            @Html.AntiForgeryToken()
+            <div class="col-12 col-md-3">
+                <label class="form-label fw-semibold text-muted small">Item</label>
+                <input type="text" name="name" class="form-control rounded-pill px-4 py-3 fs-5" placeholder="Item name..." required />
+            </div>
+            <div class="col-6 col-md-2">
+                <label class="form-label fw-semibold text-muted small">Qty</label>
+                <input type="number" name="quantity" class="form-control rounded-pill px-4 py-3 fs-5" value="1" min="1" />
+            </div>
+            <div class="col-6 col-md-2">
+                <label class="form-label fw-semibold text-muted small">Category</label>
+                <select name="category" class="form-select rounded-pill px-4 py-3 fs-5">
+                    <option value="Fruits">Fruits</option>
+                    <option value="Vegetables">Vegetables</option>
+                    <option value="Meat">Meat</option>
+                    <option value="Dairy">Dairy</option>
+                    <option value="Bakery">Bakery</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="col-12 col-md-3">
+                <label class="form-label fw-semibold text-muted small">Note</label>
+                <input type="text" name="note" class="form-control rounded-pill px-4 py-3 fs-5" placeholder="Optional note..." />
+            </div>
+            <div class="col-12 col-md-2 d-grid">
+                <button type="submit" class="btn text-white rounded-pill fw-bold px-4 py-3 fs-5 add-btn">
+                    <i class="bi bi-plus-circle me-1"></i>Add
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Delete All Button -->
+    <form asp-action="ClearAll" method="post" class="text-center mb-5">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-outline-danger rounded-pill fw-bold px-5 py-3 fs-5 delete-btn">
+            <i class="bi bi-trash me-2"></i>Delete All Items
+        </button>
+    </form>
+
+    <!-- Grocery List -->
+    <div class="container pb-6">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+            @foreach (var item in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 grocery-card">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title mb-1 @(item.IsBought ? "text-decoration-line-through text-success" : "text-dark") fs-5">
+                                @item.Name <span class="text-muted small">x @item.Quantity</span>
+                            </h5>
+                            <span class="badge mb-2 align-self-start"
+                                  style="background-color: var(--accent); color: white;">@item.Category</span>
+                            @if (!string.IsNullOrWhiteSpace(item.Note))
+                            {
+                                <div class="text-muted fst-italic small mb-3">📝 @item.Note</div>
+                            }
+                            <div class="mt-auto d-flex justify-content-end gap-2">
+                                <form asp-action="ToggleBought" asp-route-id="@item.Id" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-outline-success rounded-pill px-3 py-2 fs-6" title="Mark as bought">✔️</button>
+                                </form>
+                                <button type="button" class="btn btn-outline-danger rounded-pill px-3 py-2 fs-6"
+                                        onclick="confirmDelete('@item.Id', '@item.Name')">
+                                    🗑️
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Category Chart -->
+    <div class="text-center mt-5">
+        <canvas id="categoryChart" style="max-width: 400px; margin: auto;"></canvas>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        function confirmDelete(id, name) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: `Delete "${name}"?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#2E8B57',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.createElement('form');
+                    form.method = 'post';
+                    form.action = '/Grocery/Delete/' + id;
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }
+
+        const ctx = document.getElementById('categoryChart')?.getContext('2d');
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [@Html.Raw(categoryLabels)],
+                    datasets: [{
+                        data: [@Html.Raw(categoryData)],
+                        backgroundColor: ['#FF7F50', '#2E8B57', '#F4A460', '#FFD700', '#CD853F', '#90EE90'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#2C1810' } }
+                    }
+                }
+            });
+        }
+    </script>
+
+    <style>
+        /* ✨ Animations */
+        .animate-fade {
+            animation: fadeInUp 0.8s ease both;
+        }
+
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 🔘 Buttons */
+        .search-btn {
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            border: none;
+        }
+
+            .search-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 12px rgba(46, 139, 87, 0.3);
+            }
+
+        .action-btn {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border: none;
+        }
+
+        .action-btn-alt {
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            border: none;
+        }
+
+            .action-btn:hover, .action-btn-alt:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 14px rgba(0, 0, 0, 0.1);
+            }
+
+        .add-btn {
+            background: var(--primary);
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+            .add-btn:hover {
+                background: var(--accent);
+                transform: scale(1.05);
+            }
+
+        .delete-btn:hover {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        /* 🛍️ Cards */
+        .grocery-card {
+            background-color: #fffdf9;
+            border-left: 6px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+            .grocery-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 0.75rem 1.25rem rgba(0, 0, 0, 0.1);
+            }
+
+        .pb-6 {
+            padding-bottom: 6rem !important;
+        }
+
+        .progress-bar {
+            transition: width 0.6s ease;
+        }
+
+        /* 📱 Responsive */
+        @@media (max-width: 768px) {
+            .action-btn, .action-btn-alt {
+                width: 100%;
+                font-size: 1rem;
+            }
+
+            .add-btn {
+                width: 100%;
+                margin-top: 1rem;
+            }
+
+            .form-control, .form-select {
+                font-size: 1rem;
+            }
+
+            .progress {
+                height: 22px !important;
+            }
+        }
+    </style>
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

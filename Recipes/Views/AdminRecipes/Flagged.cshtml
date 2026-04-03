@@ -1,0 +1,58 @@
+﻿@model List<Recipes.Models.Recipe>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Flagged Recipes";
+}
+
+<div class="container py-5">
+
+    <h2 class="fw-bold mb-4 text-danger">Flagged Recipes</h2>
+    <p class="text-muted">These recipes were automatically detected as containing vulgar or inappropriate words.</p>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-success">No flagged recipes. Everything looks clean!</div>
+        return;
+    }
+
+    <table class="table table-bordered table-striped bg-white">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>User</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var r in Model)
+            {
+                <tr>
+                    <td>@r.Id</td>
+                    <td class="text-danger fw-bold">@r.Title</td>
+                    <td>@r.ApplicationUserId</td>
+                    <td>@r.DateAdded.ToString("yyyy-MM-dd")</td>
+
+                    <td>
+                        <a asp-controller="Recipes" asp-action="View" asp-route-id="@r.Id"
+                           class="btn btn-sm btn-primary">View</a>
+
+                        <a asp-controller="Recipes" asp-action="Edit" asp-route-id="@r.Id"
+                           class="btn btn-sm btn-warning">Edit</a>
+
+                        <form asp-controller="AdminRecipes" asp-action="Delete" asp-route-id="@r.Id"
+                              method="post" class="d-inline"
+                              onclick="return confirm('Delete this flagged recipe?');">
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+</div>

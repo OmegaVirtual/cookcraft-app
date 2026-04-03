@@ -1,0 +1,211 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Recipes.Models
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CookCraft</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Recipes.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+
+    <style>
+        :root {
+            --primary: #1f2937; /* Dark navy */
+            --accent: #ffd700; /* Gold */
+            --background: #f9fafb;
+            --text-dark: #f8fafc;
+            --text-light: #d1d5db;
+        }
+
+        body {
+            background-color: var(--background);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #1f2937 0%, #111827 100%);
+            backdrop-filter: blur(12px);
+            transition: all 0.5s ease;
+            padding: 1.75rem 2rem;
+            margin: 0.5rem 1rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 2.8rem;
+            color: var(--accent) !important;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            width: 80px;
+            height: 80px;
+            margin-right: 18px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: white;
+            padding: 4px;
+        }
+
+        .nav-link {
+            font-weight: 600;
+            color: var(--text-light) !important;
+            font-size: 1.6rem;
+            padding: 1rem 2rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+            .nav-link::after {
+                content: '';
+                position: absolute;
+                width: 0%;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: var(--accent);
+                transition: width 0.3s ease;
+            }
+
+            .nav-link:hover::after {
+                width: 100%;
+            }
+
+        .hero {
+            background-image: url('/images/hero.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 1rem;
+        }
+
+            .hero h1 {
+                font-size: 3.5rem;
+                font-weight: 700;
+            }
+
+            .hero p {
+                font-size: 1.25rem;
+            }
+
+        .footer {
+            background: #1f2937;
+            padding: 2rem 0;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            border-top: 2px solid var(--accent);
+        }
+
+            .footer a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+
+                .footer a:hover {
+                    text-decoration: underline;
+                }
+
+        main {
+            padding-top: 1rem;
+            padding-bottom: 3rem;
+        }
+
+        .container {
+            max-width: 1240px;
+        }
+
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade {
+            animation: fadeInUp 0.8s ease both;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg fixed-top">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    <img src="@Url.Content("~/uploads/CookCraftLogo.png")" alt="Logo" class="logo-img" />
+                    CookCraft
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navMenu">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Recipes" asp-action="Index">Recipe Library</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Grocery" asp-action="List">Grocery Planner</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Allergens" asp-action="Index">Allergen Management</a></li>
+                    </ul>
+                    @await Html.PartialAsync("_LoginPartial")
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    @if (ViewData["Title"]?.ToString() != "Privacy Policy")
+    {
+        <section class="hero text-center">
+            <div class="container">
+                <h1>Master the Art of Cooking</h1>
+                <p>Explore handcrafted recipes from around the world.</p>
+            </div>
+        </section>
+    }
+
+    <div class="container mt-3">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer text-center">
+        <div class="container">
+            &copy; 2025 - CookCraft | <a asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        window.addEventListener('scroll', function () {
+            var navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

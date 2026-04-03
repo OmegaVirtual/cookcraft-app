@@ -1,0 +1,80 @@
+﻿@page
+@model Recipes.Areas.Identity.Pages.Account.LoginModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Login";
+}
+
+<section class="py-5 pb-6" style="background-color: var(--background);">
+    <div class="container px-3">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold display-4" style="color: var(--primary);">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Welcome Back to CookCraft
+            </h2>
+            <p class="text-muted fs-5">Login to manage your recipes and explore new dishes.</p>
+        </div>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger text-center">⚠️ Login failed. Please try again.</div>
+        }
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-lg border-0 rounded-4 p-5" style="background-color: #ffffff; color: #0f172a;">
+                    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <!-- Username -->
+                        <div class="form-group mb-4">
+                            <label asp-for="Input.Username" class="form-label form-label-lg fw-semibold">👤 Username</label>
+                            <input asp-for="Input.Username" class="form-control form-control-lg rounded-pill" placeholder="Enter your username" />
+                            <span asp-validation-for="Input.Username" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-group mb-4">
+                            <label asp-for="Input.Password" class="form-label form-label-lg fw-semibold">🔒 Password</label>
+                            <input asp-for="Input.Password" class="form-control form-control-lg rounded-pill" placeholder="Enter your password" />
+                            <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Remember Me -->
+                        <div class="form-group mb-4 d-flex align-items-center">
+                            <input asp-for="Input.RememberMe" class="form-check-input me-2" />
+                            <label class="form-check-label" asp-for="Input.RememberMe">Remember me</label>
+                        </div>
+
+                        <!-- Submit -->
+                        <button type="submit" class="btn btn-xl text-white w-100 rounded-pill fw-bold" style="background-color: var(--accent);">
+                            <i class="bi bi-door-open-fill me-2"></i>Login
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .btn-xl {
+        font-size: 1.25rem;
+        padding: 1rem 2rem;
+    }
+
+    .form-label-lg {
+        font-size: 1.1rem;
+        color: #0f172a;
+    }
+
+    input.form-control-lg {
+        font-size: 1.1rem;
+        background-color: #ffffff;
+        color: #0f172a;
+    }
+
+    .container.pb-6 {
+        padding-bottom: 6rem !important;
+    }
+</style>
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

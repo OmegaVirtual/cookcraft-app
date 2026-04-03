@@ -1,0 +1,117 @@
+﻿@model Recipes.Models.ViewModels.ShoppingListRequestViewModel
+@{
+    ViewData["Title"] = "Smart Grocery Generator";
+}
+
+<section class="py-5 pb-6" style="background-color: var(--background);">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h1 class="fw-bold display-4" style="color: var(--primary);">
+                <i class="bi bi-lightbulb-fill me-2"></i>Smart Grocery Generator
+            </h1>
+            <p class="text-muted fs-5">Answer a few quick questions and we’ll generate a healthy shopping list just for you!</p>
+        </div>
+
+        <form asp-action="Generate" method="post" class="bg-white shadow rounded-4 p-5 mx-auto animate__animated animate__fadeInUp" style="max-width: 600px;">
+            <!-- Question 1 -->
+            <label class="fw-semibold mb-1 text-dark" for="householdSize">👨‍👩‍👧‍👦 How many people are in your household?</label>
+            <input type="number" name="NumberOfPeople" id="householdSize" class="form-control form-control-lg rounded-pill mb-4" value="1" min="1" max="20" readonly />
+
+            <!-- Question 2 -->
+            <label class="fw-semibold mb-1 text-dark">🎂 Age group for each person</label>
+            <div id="ageGroupsContainer">
+                <select name="AgeGroups" class="form-select form-select-lg rounded-pill mb-2" required>
+                    <option value="Adult">Adult</option>
+                    <option value="Child">Child</option>
+                    <option value="Senior">Senior</option>
+                    <option value="Baby">Baby</option>
+                </select>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-primary rounded-pill mb-4" onclick="addAgeGroup()">
+                <i class="bi bi-person-plus"></i> Add Another Person
+            </button>
+
+            <!-- Question 3 -->
+            <label class="fw-semibold mb-1 text-dark" for="duration">📅 How many days do you want the list for?</label>
+            <select name="DurationInDays" id="duration" class="form-select form-select-lg rounded-pill mb-4" required>
+                <option value="1">1 Day</option>
+                <option value="3">3 Days</option>
+                <option value="5">5 Days</option>
+                <option value="7">1 Week</option>
+            </select>
+
+            <!-- Question 4 -->
+            <label class="fw-semibold mb-1 text-dark" for="diet">🥦 Dietary Preference (optional)</label>
+            <select name="DietPreference" id="diet" class="form-select form-select-lg rounded-pill mb-4">
+                <option value="">None</option>
+                <option value="Vegetarian">Vegetarian</option>
+                <option value="Vegan">Vegan</option>
+                <option value="Gluten-Free">Gluten-Free</option>
+            </select>
+
+            <!-- Submit -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-lg text-white btn-xl rounded-pill px-5 fw-bold" style="background-color: var(--accent);">
+                    ✨ Generate My List
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        function addAgeGroup() {
+            const container = document.getElementById("ageGroupsContainer");
+            const select = document.createElement("select");
+            select.name = "AgeGroups";
+            select.className = "form-select form-select-lg rounded-pill mb-2";
+            select.required = true;
+            select.innerHTML = `
+                <option value="Adult">Adult</option>
+                <option value="Child">Child</option>
+                <option value="Senior">Senior</option>
+                <option value="Baby">Baby</option>
+            `;
+            container.appendChild(select);
+
+            const count = container.querySelectorAll("select").length;
+            document.getElementById("householdSize").value = count;
+        }
+    </script>
+
+    <style>
+        .btn-xl {
+            font-size: 1.2rem;
+            padding: 0.9rem 2.2rem;
+        }
+
+        section.pb-6 {
+            padding-bottom: 6rem !important;
+        }
+
+        .animate__animated {
+            animation-duration: 1.2s;
+            animation-fill-mode: both;
+        }
+
+        .animate__fadeInUp {
+            animation-name: fadeInUp;
+        }
+
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate3d(0, 40px, 0);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+    </style>
+}
+
+<!-- Include Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

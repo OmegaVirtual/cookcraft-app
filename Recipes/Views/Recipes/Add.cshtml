@@ -1,0 +1,168 @@
+﻿@model Recipes.Models.AddRecipeViewModel
+
+@{
+    ViewData["Title"] = "Add New Recipe";
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold display-5" style="color: var(--primary);">
+            <i class="bi bi-plus-circle-dotted me-2"></i> Add New Recipe
+        </h1>
+        <p class="text-muted">Share your culinary creation with the world</p>
+        <a asp-controller="Import" asp-action="Index" class="btn btn-outline-primary mt-3">
+            <i class="bi bi-cloud-download-fill me-2"></i> Import Recipe
+        </a>
+    </div>
+
+    <!-- FORM -->
+    <form asp-action="Add" asp-controller="Recipes" method="post" enctype="multipart/form-data"
+          class="shadow p-4 rounded bg-white">
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <!-- TITLE -->
+        <div class="mb-4">
+            <label asp-for="Title" class="form-label fw-semibold">Recipe Title</label>
+            <input asp-for="Title" class="form-control form-control-lg"
+                   placeholder="e.g. Creamy Chicken Pasta" required />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <!-- INGREDIENTS -->
+        <div class="mb-4">
+            <label asp-for="IngredientsText" class="form-label fw-semibold">Ingredients</label>
+            <textarea asp-for="IngredientsText" class="form-control form-control-lg"
+                      rows="5" placeholder="- 200g chicken&#10;- 1 onion" required></textarea>
+            <div class="form-text">List one ingredient per line.</div>
+            <span asp-validation-for="IngredientsText" class="text-danger"></span>
+        </div>
+
+        <!-- LIVE ALLERGEN PREVIEW -->
+        <div id="allergenBox"
+             class="alert alert-danger shadow-sm rounded-3 p-3 d-none"></div>
+
+        <!-- INSTRUCTIONS -->
+        <div class="mb-4">
+            <label asp-for="Instructions" class="form-label fw-semibold">Instructions</label>
+            <textarea asp-for="Instructions" class="form-control form-control-lg"
+                      rows="6" placeholder="Step-by-step cooking guide..." required></textarea>
+            <span asp-validation-for="Instructions" class="text-danger"></span>
+        </div>
+
+        <!-- IMAGE -->
+        <div class="mb-4">
+            <label for="ImageFile" class="form-label fw-semibold">Upload Dish Photo</label>
+            <input type="file" id="ImageFile" name="ImageFile"
+                   accept="image/*" class="form-control form-control-lg" />
+            <div class="form-text">Supported formats: JPG, PNG</div>
+        </div>
+
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-lg text-white"
+                    style="background-color: var(--accent);">
+                <i class="bi bi-save me-2"></i> Save Recipe
+            </button>
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-1"></i> Back to Recipe Library
+            </a>
+        </div>
+    </form>
+</div>
+
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        /************************************************
+         * ADVANCED ALLERGEN DETECTOR
+         ************************************************/
+
+        const allergenBox = document.getElementById("allergenBox");
+        const ingredientBox = document.querySelector("textarea[name='IngredientsText']");
+
+        const allergenIcons = {
+            "Milk": "🥛", "Eggs": "🥚", "Gluten": "🌾", "Peanuts": "🥜",
+            "Tree Nuts": "🌰", "Fish": "🐟", "Crustaceans": "🦐", "Molluscs": "🐚",
+            "Soy": "🌱", "Sesame": "⚪", "Mustard": "🌼",
+            "Celery": "🥬", "Lupin": "🌸", "Sulphites": "💨"
+        };
+
+        const allergenKeywords = {
+            "milk": "Milk", "cheese": "Milk", "cream": "Milk", "butter": "Milk",
+            "yogurt": "Milk", "whey": "Milk", "casein": "Milk",
+            "egg": "Eggs", "eggs": "Eggs", "mayo": "Eggs",
+            "flour": "Gluten", "wheat": "Gluten", "bread": "Gluten",
+            "pasta": "Gluten", "rye": "Gluten", "barley": "Gluten",
+            "peanut": "Peanuts", "groundnut": "Peanuts",
+            "almond": "Tree Nuts", "walnut": "Tree Nuts",
+            "hazelnut": "Tree Nuts", "cashew": "Tree Nuts",
+            "fish": "Fish", "salmon": "Fish", "tuna": "Fish",
+            "shrimp": "Crustaceans", "crab": "Crustaceans",
+            "lobster": "Crustaceans",
+            "soy": "Soy", "soya": "Soy",
+            "sesame": "Sesame", "tahini": "Sesame",
+            "mustard": "Mustard",
+            "celery": "Celery",
+            "lupin": "Lupin",
+            "sulphite": "Sulphites", "wine": "Sulphites"
+        };
+
+        const hiddenAllergens = {
+            "béchamel": ["Milk"], "alfredo": ["Milk", "Gluten"],
+            "carbonara": ["Eggs", "Milk"], "ganache": ["Milk"],
+            "pesto": ["Tree Nuts"], "satay": ["Peanuts"],
+            "fish sauce": ["Fish"], "kimchi": ["Fish"],
+            "oyster sauce": ["Molluscs"],
+            "hummus": ["Sesame"], "falafel": ["Sesame"],
+            "roux": ["Gluten"], "batter": ["Gluten"],
+            "naan": ["Gluten", "Milk"],
+            "pancake": ["Gluten", "Eggs", "Milk"],
+            "gravy": ["Gluten"], "tempura": ["Gluten"]
+        };
+
+        let allergenTimer = null;
+
+        function detectAllergens() {
+            clearTimeout(allergenTimer);
+
+            allergenTimer = setTimeout(() => {
+                const text = ingredientBox.value.toLowerCase();
+                let found = [];
+
+                for (const [key, allergen] of Object.entries(allergenKeywords)) {
+                    if (text.includes(key)) found.push(allergen);
+                }
+
+                for (const [trigger, list] of Object.entries(hiddenAllergens)) {
+                    if (text.includes(trigger)) found.push(...list);
+                }
+
+                found = [...new Set(found)];
+
+                if (found.length === 0) {
+                    allergenBox.classList.add("d-none");
+                    allergenBox.innerHTML = "";
+                    return;
+                }
+
+                allergenBox.classList.remove("d-none");
+                allergenBox.innerHTML =
+                    "<strong>⚠ Potential Allergens:</strong><br><br>" +
+                    found.map(a =>
+                        `<span class="badge bg-danger px-3 py-2 rounded-pill me-1 mb-1">
+                            ${allergenIcons[a]} ${a}
+                         </span>`
+                    ).join("");
+            }, 200);
+        }
+
+        ingredientBox.addEventListener("input", detectAllergens);
+    </script>
+
+}

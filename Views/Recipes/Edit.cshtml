@@ -1,0 +1,73 @@
+﻿@model Recipes.Models.AddRecipeViewModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Edit Recipe";
+    var id = ViewBag.RecipeId;
+    var user = User.Identity.IsAuthenticated ? await UserManager.GetUserAsync(User) : null;
+    var isOwnerOrAdmin = user != null && (ViewBag.RecipeOwnerId == user.Id || User.IsInRole("Admin"));
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold display-6" style="color: var(--primary);">
+            <i class="bi bi-pencil-square me-2"></i>Edit Recipe
+        </h2>
+        <p class="text-muted">Update your recipe details below</p>
+    </div>
+
+    @if (isOwnerOrAdmin)
+    {
+        <form asp-action="Edit" asp-route-id="@id" method="post" enctype="multipart/form-data" class="shadow p-4 rounded bg-white mx-auto" style="max-width: 720px;">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="mb-4">
+                <label asp-for="Title" class="form-label fw-semibold">Title</label>
+                <input asp-for="Title" class="form-control form-control-lg" placeholder="Recipe name..." />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="ShortDescription" class="form-label fw-semibold">Short Description</label>
+                <input asp-for="ShortDescription" class="form-control form-control-lg" placeholder="Short summary of the recipe..." />
+                <span asp-validation-for="ShortDescription" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="IngredientsText" class="form-label fw-semibold">Ingredients (one per line)</label>
+                <textarea asp-for="IngredientsText" class="form-control form-control-lg" rows="5" placeholder="- 2 eggs\n- 100g flour"></textarea>
+                <span asp-validation-for="IngredientsText" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Instructions" class="form-label fw-semibold">Instructions</label>
+                <textarea asp-for="Instructions" class="form-control form-control-lg" rows="6" placeholder="Step-by-step guide..."></textarea>
+                <span asp-validation-for="Instructions" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-semibold">Change Image (optional)</label>
+                <input type="file" name="ImageFile" class="form-control form-control-lg" accept="image/*" />
+            </div>
+
+            <div class="text-center d-flex justify-content-center gap-3">
+                <button type="submit" class="btn btn-lg text-white" style="background-color: var(--accent);">
+                    <i class="bi bi-save me-2"></i>Save Changes
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                    <i class="bi bi-x-circle me-1"></i>Cancel
+                </a>
+            </div>
+        </form>
+    }
+    else
+    {
+        <div class="alert alert-danger text-center fs-5 fw-semibold shadow" role="alert">
+            <i class="bi bi-shield-lock me-2"></i>You do not have permission to edit this recipe.
+        </div>
+    }
+</div>
+
+<!-- Include Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

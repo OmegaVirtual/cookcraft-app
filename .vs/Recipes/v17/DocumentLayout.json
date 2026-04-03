@@ -1,0 +1,357 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|c:\\users\\user\\onedrive\\desktop\\recipes\\recipes\\recipes\\recipes\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|solutionrelative:recipes\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|c:\\users\\user\\onedrive\\desktop\\recipes\\recipes\\recipes\\recipes\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|solutionrelative:recipes\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|c:\\users\\user\\onedrive\\desktop\\recipes\\recipes\\recipes\\recipes\\views\\grocery\\generatedlist.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|solutionrelative:recipes\\views\\grocery\\generatedlist.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|c:\\users\\user\\onedrive\\desktop\\recipes\\recipes\\recipes\\recipes\\controllers\\grocerycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|solutionrelative:recipes\\controllers\\grocerycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|c:\\users\\user\\onedrive\\desktop\\recipes\\recipes\\recipes\\recipes\\views\\grocery\\list.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|solutionrelative:recipes\\views\\grocery\\list.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|c:\\users\\user\\onedrive\\desktop\\recipes\\recipes\\recipes\\recipes\\models\\viewmodels\\generatedgroceryitemviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|solutionrelative:recipes\\models\\viewmodels\\generatedgroceryitemviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|c:\\users\\user\\onedrive\\desktop\\recipes\\recipes\\recipes\\recipes\\controllers\\recipescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|solutionrelative:recipes\\controllers\\recipescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|c:\\users\\user\\onedrive\\desktop\\recipes\\recipes\\recipes\\recipes\\models\\viewmodels\\ingredientpickerviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|solutionrelative:recipes\\models\\viewmodels\\ingredientpickerviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|c:\\users\\user\\onedrive\\desktop\\recipes\\recipes\\recipes\\recipes\\views\\recipes\\pickingredients.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|solutionrelative:recipes\\views\\recipes\\pickingredients.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|c:\\users\\user\\onedrive\\desktop\\recipes\\recipes\\recipes\\recipes\\data\\migrations\\20250605105119_addgroceryitemstouser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|solutionrelative:recipes\\data\\migrations\\20250605105119_addgroceryitemstouser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|c:\\users\\user\\onedrive\\desktop\\recipes\\recipes\\recipes\\recipes\\models\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|solutionrelative:recipes\\models\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|c:\\users\\user\\onedrive\\desktop\\recipes\\recipes\\recipes\\recipes\\views\\import\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|solutionrelative:recipes\\views\\import\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|c:\\users\\user\\onedrive\\desktop\\recipes\\recipes\\recipes\\recipes\\services\\recipeimportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|solutionrelative:recipes\\services\\recipeimportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|c:\\users\\user\\onedrive\\desktop\\recipes\\recipes\\recipes\\recipes\\services\\irecipeimportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|solutionrelative:recipes\\services\\irecipeimportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|c:\\users\\user\\onedrive\\desktop\\recipes\\recipes\\recipes\\recipes\\controllers\\importcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|solutionrelative:recipes\\controllers\\importcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|c:\\users\\user\\onedrive\\desktop\\recipes\\recipes\\recipes\\recipes\\data\\recipes.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|solutionrelative:recipes\\data\\recipes.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|c:\\users\\user\\onedrive\\desktop\\recipes\\recipes\\recipes\\recipes\\views\\recipes\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|solutionrelative:recipes\\views\\recipes\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|c:\\users\\user\\onedrive\\desktop\\recipes\\recipes\\recipes\\recipes\\views\\recipes\\add.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|solutionrelative:recipes\\views\\recipes\\add.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|c:\\users\\user\\onedrive\\desktop\\recipes\\recipes\\recipes\\recipes\\views\\recipes\\view.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|solutionrelative:recipes\\views\\recipes\\view.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|c:\\users\\user\\onedrive\\desktop\\recipes\\recipes\\recipes\\recipes\\models\\recipe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|solutionrelative:recipes\\models\\recipe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|c:\\users\\user\\onedrive\\desktop\\recipes\\recipes\\recipes\\recipes\\data\\migrations\\20250604103610_addingredientsjsontorecipe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{68892A9D-1444-4861-8AF6-DE1F4B9A8BB0}|Recipes\\Recipes.csproj|solutionrelative:recipes\\data\\migrations\\20250604103610_addingredientsjsontorecipe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 8,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "GeneratedList.cshtml",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Views\\Grocery\\GeneratedList.cshtml",
+              "RelativeDocumentMoniker": "Recipes\\Views\\Grocery\\GeneratedList.cshtml",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Views\\Grocery\\GeneratedList.cshtml",
+              "RelativeToolTip": "Recipes\\Views\\Grocery\\GeneratedList.cshtml",
+              "ViewState": "AgIAAEAAAAAAAAAAAAAAAG8AAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-05T14:18:40.983Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "GeneratedGroceryItemViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Models\\ViewModels\\GeneratedGroceryItemViewModel.cs",
+              "RelativeDocumentMoniker": "Recipes\\Models\\ViewModels\\GeneratedGroceryItemViewModel.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Models\\ViewModels\\GeneratedGroceryItemViewModel.cs",
+              "RelativeToolTip": "Recipes\\Models\\ViewModels\\GeneratedGroceryItemViewModel.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAYwCMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-05T14:17:56.63Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "20250605105119_AddGroceryItemsToUser.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Data\\Migrations\\20250605105119_AddGroceryItemsToUser.cs",
+              "RelativeDocumentMoniker": "Recipes\\Data\\Migrations\\20250605105119_AddGroceryItemsToUser.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Data\\Migrations\\20250605105119_AddGroceryItemsToUser.cs",
+              "RelativeToolTip": "Recipes\\Data\\Migrations\\20250605105119_AddGroceryItemsToUser.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-05T10:51:20.394Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "List.cshtml",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Views\\Grocery\\List.cshtml",
+              "RelativeDocumentMoniker": "Recipes\\Views\\Grocery\\List.cshtml",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Views\\Grocery\\List.cshtml",
+              "RelativeToolTip": "Recipes\\Views\\Grocery\\List.cshtml",
+              "ViewState": "AgIAALYAAAAAAAAAAAAAwNYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-05T10:44:50.36Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "GroceryController.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Controllers\\GroceryController.cs",
+              "RelativeDocumentMoniker": "Recipes\\Controllers\\GroceryController.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Controllers\\GroceryController.cs",
+              "RelativeToolTip": "Recipes\\Controllers\\GroceryController.cs",
+              "ViewState": "AgIAAKUBAAAAAAAAAAAAwMUBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-05T10:35:39.953Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "PickIngredients.cshtml",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Views\\Recipes\\PickIngredients.cshtml",
+              "RelativeDocumentMoniker": "Recipes\\Views\\Recipes\\PickIngredients.cshtml",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Views\\Recipes\\PickIngredients.cshtml",
+              "RelativeToolTip": "Recipes\\Views\\Recipes\\PickIngredients.cshtml",
+              "ViewState": "AgIAAGwAAAAAAAAAAAAswIwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-05T10:35:22.827Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "IngredientPickerViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Models\\ViewModels\\IngredientPickerViewModel.cs",
+              "RelativeDocumentMoniker": "Recipes\\Models\\ViewModels\\IngredientPickerViewModel.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Models\\ViewModels\\IngredientPickerViewModel.cs",
+              "RelativeToolTip": "Recipes\\Models\\ViewModels\\IngredientPickerViewModel.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAQwBYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-05T10:33:13.851Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ApplicationUser.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Models\\ApplicationUser.cs",
+              "RelativeDocumentMoniker": "Recipes\\Models\\ApplicationUser.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Models\\ApplicationUser.cs",
+              "RelativeToolTip": "Recipes\\Models\\ApplicationUser.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-05T10:28:52.069Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Recipes\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Recipes\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAKkAAAAAAAAAAAAAAMgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-04T21:10:11.016Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "recipes.json",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Data\\recipes.json",
+              "RelativeDocumentMoniker": "Recipes\\Data\\recipes.json",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Data\\recipes.json",
+              "RelativeToolTip": "Recipes\\Data\\recipes.json",
+              "ViewState": "AgIAANUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-06-04T20:59:57.378Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Add.cshtml",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Views\\Recipes\\Add.cshtml",
+              "RelativeDocumentMoniker": "Recipes\\Views\\Recipes\\Add.cshtml",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Views\\Recipes\\Add.cshtml",
+              "RelativeToolTip": "Recipes\\Views\\Recipes\\Add.cshtml",
+              "ViewState": "AgIAABgAAAAAAAAAAAAgwDsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-04T11:19:42.339Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "View.cshtml",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Views\\Recipes\\View.cshtml",
+              "RelativeDocumentMoniker": "Recipes\\Views\\Recipes\\View.cshtml",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Views\\Recipes\\View.cshtml",
+              "RelativeToolTip": "Recipes\\Views\\Recipes\\View.cshtml",
+              "ViewState": "AgIAAJQAAAAAAAAAAAAgwJ8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-04T11:18:09.237Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Views\\Recipes\\Index.cshtml",
+              "RelativeDocumentMoniker": "Recipes\\Views\\Recipes\\Index.cshtml",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Views\\Recipes\\Index.cshtml",
+              "RelativeToolTip": "Recipes\\Views\\Recipes\\Index.cshtml",
+              "ViewState": "AgIAAI4AAAAAAAAAAAAgwJgAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-04T11:16:36.487Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "RecipesController.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Controllers\\RecipesController.cs",
+              "RelativeDocumentMoniker": "Recipes\\Controllers\\RecipesController.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Controllers\\RecipesController.cs",
+              "RelativeToolTip": "Recipes\\Controllers\\RecipesController.cs",
+              "ViewState": "AgIAAOUBAAAAAAAAAAAqwAcCAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T11:13:55.935Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Program.cs",
+              "RelativeDocumentMoniker": "Recipes\\Program.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Program.cs",
+              "RelativeToolTip": "Recipes\\Program.cs",
+              "ViewState": "AgIAAC8AAAAAAAAAAAAAADYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T10:35:33.682Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "RecipeImportService.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Services\\RecipeImportService.cs",
+              "RelativeDocumentMoniker": "Recipes\\Services\\RecipeImportService.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Services\\RecipeImportService.cs",
+              "RelativeToolTip": "Recipes\\Services\\RecipeImportService.cs",
+              "ViewState": "AgIAABoBAAAAAAAAAAAiwDgBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T10:49:22.28Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "IRecipeImportService.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Services\\IRecipeImportService.cs",
+              "RelativeDocumentMoniker": "Recipes\\Services\\IRecipeImportService.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Services\\IRecipeImportService.cs",
+              "RelativeToolTip": "Recipes\\Services\\IRecipeImportService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T10:48:48.067Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "20250604103610_AddIngredientsJsonToRecipe.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Data\\Migrations\\20250604103610_AddIngredientsJsonToRecipe.cs",
+              "RelativeDocumentMoniker": "Recipes\\Data\\Migrations\\20250604103610_AddIngredientsJsonToRecipe.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Data\\Migrations\\20250604103610_AddIngredientsJsonToRecipe.cs",
+              "RelativeToolTip": "Recipes\\Data\\Migrations\\20250604103610_AddIngredientsJsonToRecipe.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T10:36:11.574Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Views\\Import\\Index.cshtml",
+              "RelativeDocumentMoniker": "Recipes\\Views\\Import\\Index.cshtml",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Views\\Import\\Index.cshtml",
+              "RelativeToolTip": "Recipes\\Views\\Import\\Index.cshtml",
+              "ViewState": "AgIAADgAAAAAAAAAAAAgwEQAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-04T10:34:58.86Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ImportController.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Controllers\\ImportController.cs",
+              "RelativeDocumentMoniker": "Recipes\\Controllers\\ImportController.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Controllers\\ImportController.cs",
+              "RelativeToolTip": "Recipes\\Controllers\\ImportController.cs",
+              "ViewState": "AgIAAHAAAAAAAAAAAAAiwI8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T10:32:50.13Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "Recipe.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Models\\Recipe.cs",
+              "RelativeDocumentMoniker": "Recipes\\Models\\Recipe.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\Recipes\\Recipes\\Recipes\\Recipes\\Models\\Recipe.cs",
+              "RelativeToolTip": "Recipes\\Models\\Recipe.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T10:27:33.16Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
